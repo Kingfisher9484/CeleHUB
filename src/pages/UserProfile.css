@@ -1,0 +1,316 @@
+/* Backdrop */
+.profile-h2{
+  color:#333;
+}
+.user-profile-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeInBackdrop 0.3s ease-in-out;
+  }
+  
+  /* Modal Container */
+  .user-profile-modal {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 30px 25px;
+    max-width: 650px;
+    width: 95%;
+    position: relative;
+    animation: slideInUp 0.4s ease;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Close Button */
+  .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #444;
+    transition: transform 0.2s ease;
+  }
+  .close-btn:hover {
+    transform: rotate(90deg);
+    color: red;
+  }
+  
+  /* Header */
+  .user-profile-modal h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 28px;
+    color: #333;
+  }
+  
+  /* Profile Section */
+  .profile-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    width: 100%;
+  }
+  
+  /* Profile Picture Area */
+  .profile-pic-container{
+    width: auto;
+    height: auto;
+    background: none;
+    display: flex;
+  }
+  .profile-pic-wrapper {
+    width: 200px;
+    height: 200px;
+    border: 2px solid var(--bg-light2);
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  .profile-pic {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-width: 200px;
+    min-height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ffc107;
+  }
+ /* From Uiverse.io by akshat-patel28 */ 
+.edit-icon/*input-div*/ {
+  position: relative;
+  align-self: flex-end;
+  justify-self: flex-end;
+  left:-50px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #f44336;
+  border: 2px solid rgb(1, 235, 252);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  box-shadow: 0px 0px 100px rgb(1, 235, 252) , inset 0px 0px 10px rgb(1, 235, 252),0px 0px 5px rgb(255, 255, 255);
+  animation: flicker 2s linear infinite;
+}
+
+.img-input-icon {
+  color: rgb(1, 235, 252);
+  font-size: 2rem;
+  cursor: pointer;
+  animation: iconflicker 2s linear infinite;
+}
+
+.img-input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer !important;
+}
+
+@keyframes flicker {
+  0% {
+    border: 2px solid rgb(1, 235, 252);
+    box-shadow: 0px 0px 100px rgb(1, 235, 252) , inset 0px 0px 10px rgb(1, 235, 252),0px 0px 5px rgb(255, 255, 255);
+  }
+
+  5% {
+    border: none;
+    box-shadow: none;
+  }
+
+  10% {
+    border: 2px solid rgb(1, 235, 252);
+    box-shadow: 0px 0px 100px rgb(1, 235, 252) , inset 0px 0px 10px rgb(1, 235, 252),0px 0px 5px rgb(255, 255, 255);
+  }
+
+  25% {
+    border: none;
+    box-shadow: none;
+  }
+
+  30% {
+    border: 2px solid rgb(1, 235, 252);
+    box-shadow: 0px 0px 100px rgb(1, 235, 252) , inset 0px 0px 10px rgb(1, 235, 252),0px 0px 5px rgb(255, 255, 255);
+  }
+
+  100% {
+    border: 2px solid rgb(1, 235, 252);
+    box-shadow: 0px 0px 100px rgb(1, 235, 252) , inset 0px 0px 10px rgb(1, 235, 252),0px 0px 5px rgb(255, 255, 255);
+  }
+}
+
+@keyframes iconflicker {
+  0% {
+    opacity: 1;
+  }
+
+  5% {
+    opacity: 0.2;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  25% {
+    opacity: 0.2;
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+  .delete-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #f44336;
+    color: white;
+    border: none;
+    font-size: 14px;
+    padding: 5px 7px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .profile-name{
+    color: #057070;
+  }
+  /* Info Fields */
+  .user-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .name-fields .inpt {
+    padding: 0 0px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 35%;
+    font-size: 16px;
+  }
+  
+  .name-fields {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+  
+  .update-name-btn, .upload-btn {
+    padding: 10px 10px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .update-name-btn:hover, .upload-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Info Text */
+  .details p {
+    font-size: 14px;
+    margin: 4px 0;
+    color: #555;
+  }
+  
+  /* Animations */
+  @keyframes fadeInBackdrop {
+    from {
+      background-color: rgba(0, 0, 0, 0);
+    }
+    to {
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+  }
+  @keyframes slideInUp {
+    from {
+      transform: translateY(60px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0px);
+      opacity: 1;
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .profile-section {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  
+    .profile-pic-wrapper {
+      width: 100px;
+      height: 100px;
+    }
+    .profile-pic {
+      min-width: 100px;
+      min-height: 100px;
+    }
+    .edit-icon/*input-div*/ {
+      width: 30px;
+      height: 30px;
+      width: 30px;
+      font-size: small;
+      left:-30px;
+    }
+    .name-fields {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .name-fields .inpt {
+      width: 50%;
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+    }
+  
+    .update-name-btn, .upload-btn {
+      width: 100%;
+      font-size: 10px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .user-profile-modal {
+      padding: 20px;
+    }
+  
+    .user-profile-modal h2 {
+      font-size: 22px;
+    }
+  
+    .details p {
+      font-size: 13px;
+    }
+  }
+  

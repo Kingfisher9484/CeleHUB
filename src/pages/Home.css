@@ -1,0 +1,210 @@
+ /* General Styles */
+ body {
+     margin: 0;
+    /* font-family: 'Bitter', serif; or Roboto, or any font you choose */
+     font-family: 'Roboto', sans-serif;
+     /* font-family: "Poppins", sans-serif; */
+
+     padding: 0;
+     background: linear-gradient(to right, #141e30, #243b55);
+
+     color: white;
+     overflow-x: hidden;
+ }
+
+ .home-page-container {
+     text-align: center;
+     flex-direction: column;
+     padding: 100px 20px 20px 20px;
+ }
+
+ /* Hero Section */
+ .home-hero {
+     padding: 50px 20px;
+     background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+     color: black;
+     border-radius: 10px;
+     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+ }
+
+ .home-page-h1,
+ .home-highlight {
+     font-size: 70px;
+     font-weight: bold;
+     cursor: pointer;
+ }
+
+ .home-page-h1 {
+     color: #ffffff;
+
+ }
+
+ .home-highlight-cele {
+     color: #ff5733;
+     animation: celehub 3s linear normal infinite;
+ }
+
+ .home-highlight {
+     color: #ff5733;
+ }
+
+ @keyframes celehub {
+     0% {
+         color: #ff5733;
+     }
+
+     25% {
+         color: #f6fa2a;
+     }
+
+     50% {
+         color: #33ff70;
+     }
+
+     75% {
+         color: #33a7ff;
+     }
+
+     0% {
+         color: #ff5733;
+     }
+
+ }
+
+ /* Scrollable Events Section */
+ .home-event-scroll {
+     padding: 5px 2px;
+     position: relative;
+     overflow: hidden;
+     margin: 0 -20px;
+     align-items: start;
+ }
+
+ .home-scroll-container {
+     display: flex;
+     overflow-x: auto;
+     scroll-behavior: smooth;
+     padding: 20px;
+     cursor: grab;
+     gap: 20px;
+     scrollbar-width: none;
+     justify-content: start;
+ }
+
+ .home-scroll-container::-webkit-scrollbar {
+     display: none;
+ }
+
+ .home-event-card {
+     flex: 0 0 300px;
+     background: var(--bg-light2);
+     color: var(--text-light);
+     border-radius: 15px;
+     padding: 10px;
+     box-shadow: 10px 1px 10px var(--shadow-light);
+     transition: transform 0.3s ease-in-out;
+ }
+
+ .dark .home-event-card {
+     color: var(--text-dark);
+     background: var(--bg-dark2);
+     box-shadow: 0px 3px 10px 5px var(--shadow-dark);
+ }
+
+ .home-event-scroll .home-event-card .home-event-img {
+     width: 100%;
+     height: 200px;
+     object-fit: cover;
+     border-radius: 10px;
+ }
+
+ .home-event-card:active {
+     transform: scale(1.2);
+     box-shadow: 0 10px 20px rgba(255, 87, 51, 0.5);
+ }
+
+ .home-event-card:hover {
+     transform: scale(1.1);
+     cursor: pointer;
+ }
+
+ .home-event-card .home-event-btn {
+     background: #ff5733;
+     color: white;
+     border: none;
+     padding: 10px 20px;
+     border-radius: 5px;
+     cursor: pointer;
+     transition: background 0.3s;
+ }
+
+ .home-event-btn :hover {
+     background: #c70039;
+ }
+
+ /* About CeleHub Section */
+ .home-about-celehub,
+ .home-services,
+ .home-contact {
+     margin: 50px 0;
+     padding: 40px;
+     border-radius: 10px;
+     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+ }
+
+ .home-about-celehub {
+     color: var(--text-light);
+     background: var(--bg-light2);
+ }
+
+ .home-services {
+     color: var(--text-light);
+     background: var(--bg-light2);
+ }
+
+ .home-contact {
+     color: var(--text-light);
+     background: var(--bg-light2);
+ }
+
+ .dark .home-about-celehub {
+     color: var(--text-dark);
+     background: var(--bg-dark2);
+ }
+
+ .dark .home-services {
+     color: var(--text-dark);
+     background: var(--bg-dark2);
+ }
+
+ .dark .home-contact {
+     color: var(--text-dark);
+     background: var(--bg-dark2);
+ }
+
+ .home-about-celehub .home-page-h2,
+ .home-services .home-page-h2,
+ .home-contact .home-page-h2 {
+     color: #ff5733;
+     transition: transform 0.3s;
+ }
+
+ .home-about-celehub .home-page-h2:hover,
+ .home-services .home-page-h2:hover,
+ .home-contact .home-page-h2:hover {
+     transform: scale(1.1);
+ }
+
+ .home-contact-links .home-contact-link {
+     display: inline-block;
+     margin: 10px;
+     color: #ffcc00;
+     text-decoration: none;
+     font-size: 1.2em;
+     transition: color 0.3s ease-in-out;
+ }
+
+ .home-contact-links .home-contact-link:hover {
+     color: #ff5733;
+     transform: scale(1.1);
+ }

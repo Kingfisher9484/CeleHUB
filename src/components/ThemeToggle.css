@@ -1,0 +1,41 @@
+.toggle-switch {
+    width: 40px;
+    height: 20px;
+    background: none;
+    border-radius: 30px;
+    position: relative;
+    cursor: pointer;
+    border: none;
+    box-shadow: 5px 3px 10px  rgba(0,0,0,0.7),
+                -5px -3px 10px rgba(255,255,255,0.8);
+    padding: 0;
+    transition: background 0.4s ease;
+    display: flex;
+    align-items: center;
+  }
+  .toggle-switch:hover{
+    background: none;
+  }
+  .toggle-switch.dark {
+    background: none;
+  }
+  
+  .toggle-thumb {
+    background: white;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .toggle-switch.dark .toggle-thumb {
+    transform: translateX(20px);
+    background: #f5c518;
+  }
+  

@@ -1,0 +1,113 @@
+/* ===== GENERAL STYLES ===== */
+body {
+    margin: 0;
+    padding: 0;
+    /* Dark theme background */
+  }
+  
+/* ===== SIDEBAR ===== */
+.sidebar {
+    position: fixed;
+    top: 55px;
+    left:0;
+    /* Push below navbar */
+    margin: 0px 0px 5px 5px;
+    padding: 0px 0;
+    width: 200px;
+    /* Adjusted height */
+    height: calc(100vh - 60px);
+    /* background: none; */
+    background: linear-gradient(135deg, #fdb7c5, #b0bdfd,#def9ef); /*vibrant gradient*/
+    /* background: linear-gradient(135deg, #fc466b, #3f5efb); vibrant gradient */
+    display: flex;
+    flex-direction: column;
+    border-radius: 0 0 0 10px;
+    border-style: solid;
+    border-width: 0px 0px 2px 2px; /* top right bottom left */
+    border-color: #bab5b9;  
+    color: var(--text-light);
+    transition: width 0.3s ease;
+    z-index: 998;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  
+  
+  
+  .sidebar.collapsed {
+    width: 60px;
+  }
+  
+  .sidebar-header {
+    list-style: none;
+    margin: 0;
+    padding: 0 10px;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid black;
+    }
+  
+  .sidebar-toggle {
+    padding:10px; 
+    justify-self: left;
+    background: none;
+    border-radius: 50%;
+    border: none;
+    color: var(--text-light);
+    font-size: 17px;
+    cursor: pointer;
+  }
+  
+  .sidebar-expanded .sidebar-toggle {
+    justify-self:right;
+  }
+  
+  .dark .sidebar-toggle {
+    color: var(--text-dark);
+  }
+  
+  .sidebar-toggle:hover {
+    background: rgba(82, 81, 81, 0.5);
+    border-radius: 10px;
+  }
+  
+  .sidebar-menu {
+    list-style: none;
+    padding: 10px;
+    font-size: 15px;
+    font-weight:750;  
+  }
+  
+  .sidebar-menu .sidebar-li {
+    color: var(--text-light);
+    padding: 10px;
+    text-align: left;
+    font-weight: lighter;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+  }
+ 
+  .dark .sidebar-menu .sidebar-li{
+    color: var(--text-dark);
+  }
+  
+  
+  .sidebar-menu .sidebar-li:hover {
+    background: rgba(109, 109, 109, 0.5);
+    border-radius: 10px;
+  }
+  .active-section {
+    background: linear-gradient(125deg, #a734ee65, #3d43fe65);
+    color: #fff;
+    border-radius: 10px;
+  }
+ 
+  .sidebar-icon {
+    transform: scale(1.1);
+    align-self: center;
+  }
+  .sidebar hr{
+    border: 1.30px solid black; 
+  }

@@ -1,0 +1,175 @@
+.bookings-wrapper {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: auto;
+    animation: fadeIn 0.8s ease-in;
+  }
+  
+  .heading {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #222;
+    font-weight: bold;
+    animation: slideDown 0.6s ease;
+  }
+  
+  .search-input {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 2rem auto;
+    display: block;
+    padding: 0.7rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: border 0.3s;
+  }
+  
+  .search-input:focus {
+    border-color: #6366f1;
+    outline: none;
+    color: #000;
+
+  }
+  
+  .table-section {
+    margin-bottom: 3rem;
+    animation: fadeUp 0.6s ease;
+  }
+  
+  .table-section h3 {
+    font-size: 1.5rem;
+    color: #444;
+    margin-bottom: 1rem;
+  }
+  
+  .bookings-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    background-color: white;
+  }
+  
+  .bookings-table thead {
+    background-color: #6366f1;
+    color: white;
+  }
+  
+  .bookings-table th, .bookings-table td {
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.95rem;
+    color: #222;
+
+  }
+  
+  .bookings-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .bookings-table tbody tr:hover {
+    background-color: #eef2ff;
+    transition: background-color 0.3s;
+  }
+  .bookings-table svg{
+        color:rgb(2, 205, 2);
+  }
+  .open-booking-btn {
+    background-color: #4f46e5;
+    color: white;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+  }
+  
+  .open-booking-btn:hover {
+    background-color: #4338ca;
+    transform: scale(1.05);
+  }
+  .export-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    margin-top: 1rem;
+  }
+  
+  .export-btn, .print-btn {
+    background-color: #10b981;
+    color: white;
+    padding: 0.6rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+  }
+  
+  .print-btn {
+    background-color: #3b82f6;
+  }
+  
+  .export-btn:hover {
+    background-color: #059669;
+    transform: scale(1.05);
+  }
+  
+  .print-btn:hover {
+    background-color: #2563eb;
+    transform: scale(1.05);
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes slideDown {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .bookings-table th, .bookings-table td {
+      font-size: 0.85rem;
+      padding: 0.7rem;
+    }
+  
+    .heading {
+      font-size: 1.5rem;
+    }
+  
+    .search-input {
+      max-width: 90%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .bookings-wrapper {
+      padding: 1rem;
+    }
+  
+    .bookings-table th, .bookings-table td {
+      font-size: 0.75rem;
+      padding: 0.6rem;
+    }
+  
+    .open-booking-btn {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.75rem;
+    }
+  }
+  

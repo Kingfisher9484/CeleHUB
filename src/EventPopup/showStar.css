@@ -1,0 +1,36 @@
+.stars {
+    display: flex;
+    gap: 2px;
+    font-size: 1.2rem;
+  }
+  
+  .stars .filled {
+    color: gold;
+  }
+  
+  .stars .empty {
+    color: rgb(179, 178, 179);
+  }
+  
+  .dark .average-text{
+    color: var(--text-dark);
+  }
+
+  .show-star-rating {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .show-average-text {
+    font-weight:600;
+    font-size: 16px;
+    color:var(--text-light);
+    justify-self: center;
+  }
+  
+  .stars .star {
+    font-size: 1.2rem;
+    margin-right: 2px;
+  }
+  
+  

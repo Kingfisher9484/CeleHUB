@@ -1,0 +1,44 @@
+.book-star-rating {
+    text-align: left;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: "10px";
+    font-size: "28px"; 
+    cursor: "pointer";
+    border-radius: 10px;
+    border: 2px solid #1d9a04;
+    width:min-content;
+    padding: 0 10px;
+  }
+  .dark .star-rating{
+    border: 2px solid var(--text-dark);
+  }
+  
+  .average-text {
+    font-weight: 600;
+  }
+  
+  .stars {
+    display: flex;
+    gap: 2px;
+  }
+  
+  .star {
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: color 0.2s;
+    color: rgb(179, 178, 179);
+
+  }
+ 
+  
+  .star.filled {
+    color: #ffc107;
+  }
+  
+  .star:hover {
+    transform: scale(1.1);
+  }
+  

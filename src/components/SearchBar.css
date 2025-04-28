@@ -1,0 +1,125 @@
+
+/* Search Bar Styles */
+.search-overlay {
+    position: fixed;
+    top: 90px;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+    width: 400px;
+    padding: 0px;
+    border-radius: 10px;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    background-color: #ccc;
+    backdrop-filter: blur(50px);
+    display: hidden;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    z-index: 1000;
+  }
+  
+  .search-overlay.open {
+    transform: translate(-50%, -50%) scale(1);
+    display: visible;
+    opacity: 1;
+  }
+  
+  .search-box {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: none;
+    border: 2px solid #ffc107;
+    border-radius: 10px;
+    padding: 0;
+    box-shadow: 0px 2px 8px var(--background-dark);
+  }
+  .search-box svg{
+    padding-left: 10px;
+  }
+  .search-box .search-input {
+    position: relative;
+    background: var(--background-light);
+    color: var(--text-light);
+    border: none;
+    outline: none;
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    min-height: 30px;
+    padding: 0 0 0 5px;
+    margin: 5px;
+    font-size: 16px;
+  }
+  
+  .search-icon {
+    color: var(--text-light);
+    background: none;
+    align-self: left;
+  }
+  
+  /* Sidebar Header */
+  .search-toggle {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    font-size: 18px;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .search-button {
+    display: flex;
+    align-items: center;
+    width: auto;
+    background: #ffc107;
+    border: none;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 5px 10px;
+    margin: 5px;
+    box-shadow: 0px 2px 8px var(--background-dark);
+  }
+  .search-button:hover {
+    background: #ffc107;
+  }
+  .dark .search-toggle {
+    color: var(--text-dark);
+  }
+ 
+  .dark .search-box {
+    background: var(--bg-dark);
+    color: var(--text-dark);
+  }
+  
+  .dark .search-input {
+    color: var(--text-dark);
+  }
+  
+  .dark .search-icon {
+    color: var(--text-dark);
+  }
+  
+/* Responsive for Mobile */
+@media (max-width: 768px) {
+    
+  /*mobile-Search bar*/
+  .search-overlay {
+    position: fixed;
+    top: 100px;
+    left: 58.5%;
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+    width: 290px;
+    padding: 0px;
+    border-radius: 10px;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    display: hidden;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    z-index: 1000;
+  }
+}

@@ -1,0 +1,152 @@
+.user-booking-detail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  min-height: 100vh;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #007bff;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.booking-card-detail,
+.event-card-detail {
+  flex: 1;
+  margin-top: 70px;
+  color: var(--text-light);
+  background-color: var(--bg-light2);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  animation: slideUp 1s ease-in-out;
+}
+
+.dark .booking-card-detail,
+.dark .event-card-detail {
+  background: var(--bg-dark2);
+  color: var(--text-dark);
+}
+
+.booking-card-detail h2 {
+  margin-bottom: 15px;
+}
+
+.booking-card-detail p {
+  font-size: 15px;
+  margin: 8px 0;
+}
+
+.admin-note {
+  margin-top: 15px;
+  padding: 12px;
+  background: #e8fbe4;
+  border-left: 4px solid #2ecc71;
+  border-radius: 6px;
+  font-weight: 500;
+  color: #2d7b3e;
+}
+.admin-note.pending {
+  background-color: #fff3cd;
+  color: #856404;
+  border-left: 4px solid #856404;
+  padding: 10px;
+  margin-top: 15px;
+  border-radius: 6px;
+}
+
+.rating-section {
+  margin-top: 20px;
+}
+
+.cancel-booking-btn {
+  margin-top: 30px;
+  background: linear-gradient(to right, #ff4b2b, #ff416c);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  animation: pulse 2s infinite;
+}
+
+.cancel-booking-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(255, 65, 108, 0.3);
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 65, 108, 0.6);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 65, 108, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 65, 108, 0);
+  }
+}
+
+/* Responsive for tablet */
+@media (max-width: 786px) {
+  .booking-card-detail {
+    padding: 20px;
+  }
+
+  .cancel-booking-btn {
+    width: 100%;
+  }
+}
+
+/* Responsive for mobile */
+@media (max-width: 500px) {
+  .booking-card-detail p {
+    font-size: 14px;
+  }
+
+  .cancel-booking-btn {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .back-btn {
+    font-size: 16px;
+  }
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+
+  .booking-card-detail,
+  .event-card-detail {
+    padding: 1rem 0.8rem;
+  }
+
+  .cancel-booking-btn {
+    width: 100%;
+  }
+}
