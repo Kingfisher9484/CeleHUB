@@ -4,12 +4,12 @@ import path from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
-  server:{
-    host:"0.0.0.0",
-    fs:{
-      strict:false
-    },
-  },
+  // server:{
+  //   host:"0.0.0.0",
+  //   fs:{
+  //     strict:false
+  //   },
+  // },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
