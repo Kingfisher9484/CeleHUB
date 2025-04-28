@@ -23,11 +23,12 @@ import react from '@vitejs/plugin-react'
 import path from "path";
 
 export default defineConfig({
-  server: {host:"0.0.0.0",
-        fs:{
-          strict:false
-        },
-    allowedHosts: ['celehub.onrender.com'], // Add the blocked host here
+  server: {
+    host: "0.0.0.0",
+    fs: {
+      strict: false,
+    },
+    allowedHosts: ['celehub-1.onrender.com'], // Corrected host
   },
   resolve: {
     alias: {
