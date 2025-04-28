@@ -1,0 +1,186 @@
+/* Form container */
+.admin-addevent-container {
+    background-color: var(--bg-light2); /* Light transparent bluish background */
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(30, 144, 255, 0.2);
+    animation: fadeSlideIn 0.8s ease forwards;
+    transform: translateY(20px);
+    opacity: 0;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+.dark .admin-addevent-container{
+    background-color: var(--bg-dark2); 
+  }
+  /* Form heading */
+  .admin-addevent-container-h3 {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1e90ff;
+    margin-bottom: 30px;
+  }
+  
+  /* Form grid */
+  .admin-addevent-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  /* Input Group */
+  .admin-addevent-input-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Labels */
+  .admin-addevent-input-label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-light);
+  }
+  .dark .admin-addevent-input-label{
+    color:var(--text-dark);
+  }
+  /* Inputs & Selects */
+  .admin-addevent-input,
+  .admin-addevent-select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #add8e6;
+    border-radius: 12px;
+    outline: none;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.7);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .admin-addevent-input:focus,
+  .admin-addevent-select:focus {
+    border-color: #1e90ff;
+    box-shadow: 0 0 8px rgba(30, 144, 255, 0.4);
+  }
+  
+  /* Buttons container */
+  .admin-addevent-buttons {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  /* Buttons */
+  .admin-addevent-btn {
+    background-color: #1e90ff;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  .admin-addevent-rst{
+    background-color: #f0d401;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .admin-addevent-btn:hover {
+    background-color: #0b78e3;
+    transform: translateY(-2px);
+  }
+  
+  .admin-addevent-btn.demo {
+    background: rgba(254, 178, 14, 0.8);
+    color: #ffffff;
+    border: 2px dashed #fefefe;
+  }
+  
+  .admin-addevent-btn.demo:hover {
+    background-color: #1e90ff;
+    color: white;
+  }
+  
+  /* Demo card */
+  .admin-event-demo-card {
+    background: rgba(34, 107, 180, 0.6);
+    border: 2px dotted #1e90ff;
+    padding: 20px;
+    border-radius: 16px;
+    margin-top: 20px;
+    animation: fadeInScale 0.6s ease forwards;
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  
+  .demo-media {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 15px;
+  }
+  
+  /* Animations */
+  @keyframes fadeSlideIn {
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeInScale {
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  /* Responsive - Tablet */
+  @media (max-width: 768px) {
+    .admin-addevent-container {
+      padding: 20px;
+    }
+    .admin-addevent-container-h3 {
+      font-size: 2rem;
+    }
+    .admin-addevent-form-grid {
+      grid-template-columns: 1fr;
+    }
+    .demo-media {
+      max-height: 200px;
+    }
+  }
+  
+  /* Responsive - Mobile */
+  @media (max-width: 480px) {
+    .admin-addevent-container {
+      padding: 15px;
+    }
+    .admin-addevent-container-h3 {
+      font-size: 1.6rem;
+    }
+    .admin-addevent-form-grid {
+      grid-template-columns: 1fr;
+    }
+    .admin-addevent-input,
+    .admin-addevent-select {
+      padding: 10px 12px;
+      font-size: 0.95rem;
+    }
+    .admin-addevent-btn {
+      width: 100%;
+    }
+  }
+  

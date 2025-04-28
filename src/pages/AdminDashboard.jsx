@@ -16,24 +16,20 @@ import EventUpdate from "../components/EventUpdate";
 import "../components/EventUpdate.css";
 import "./../components/SideBar.css";
 import "./../components/SearchBar.css"
+import AddEvent from "../components/AddEvent";
+import AdminOrders from "../components/AdminOrders";
+import RegisteredUsers from "../components/RegisteredUsers";
 //import { Timestamp } from "firebase/firestore";
 
 export default function AdminDashboard() {
-  const [eventName, setEventName] = useState("");
-  const [type, setType] = useState("");
-  const [range, setRange] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
+
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [activeSection, setActiveSection] = useState("addEvent"); // Default section to display
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [editingEventId, setEditingEventId] = useState(null); // Track which event is being edited
-  const [bookings, setBookings] = useState({ today: [], yesterday: [], older: [] });
   const navigate = useNavigate();
   const [offer, setOffer] = useState({
     type: "",
@@ -48,103 +44,12 @@ export default function AdminDashboard() {
   });
   const [offers, setOffers] = useState([]);
   const [previewImage, setPreviewImage] = useState("");
-  const [mediaFile, setMediaFile] = useState(null);
-  const [mediaPreview, setMediaPreview] = useState(null);
-  const [demoMode, setDemoMode] = useState(false);
+ 
   //const [filteredEvents, setFilteredEvents] = useState([]);
 
   const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dxavefpkp/upload";
   const Event_UPLOAD_PRESET = "event_card_img";
   const Offer_UPLOAD_PRESET = "offer_bg_img"; // replace with your Cloudinary preset
-
-  const handleMediaChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setMediaFile(file);
-      setMediaPreview(URL.createObjectURL(file));
-      setDemoMode(false); // reset demo so they click again
-    }
-  };
-
-  const handleShowDemo = (e) => {
-    e.preventDefault();
-    if (!mediaFile) {
-      alert("Please choose a file first!");
-      return;
-    }
-    setDemoMode(true);
-  };
-
-  // Inside your component
-  const handleAddEvent = async (e) => {
-    e.preventDefault();
-
-    if (!eventName || !type || !range || !description || !price || !mediaFile) {
-      alert("Please fill in all fields and select a file!");
-      return;
-    }
-
-    setLoading(true);
-    let mediaUrl = "";
-
-    try {
-      const currentUser = auth.currentUser;
-
-      if (!currentUser) {
-        alert("You must be signed in to add events.");
-        setLoading(false);
-        return;
-      }
-
-      // 🔐 Check if user is admin
-      const userDocRef = doc(db, "users", currentUser.uid);
-      const userSnap = await getDoc(userDocRef);
-      const userData = userSnap.data();
-
-      if (!userData || userData.role !== "admin") {
-        alert("You do not have permission to add events.");
-        setLoading(false);
-        return;
-      }
-
-      // ☁️ Upload image to Cloudinary
-      const formData = new FormData();
-      formData.append("file", mediaFile);
-      formData.append("upload_preset", Event_UPLOAD_PRESET);
-
-      const response = await axios.post(CLOUDINARY_URL, formData);
-      mediaUrl = response.data.secure_url;
-
-      // ✅ Add event to Firestore
-      await addDoc(collection(db, "events"), {
-        eventName,
-        type,
-        range,
-        description,
-        price: Number(price),
-        mediaUrl,
-        createdAt: serverTimestamp(), // ⏰ use server timestamp!
-      });
-
-      alert("✅ Event added successfully!");
-
-      // 🧹 Reset form
-      setEventName("");
-      setType("");
-      setRange("");
-      setDescription("");
-      setPrice("");
-      setMediaFile(null);
-      setMediaPreview(null);
-      setDemoMode(false);
-      fetchEvents();
-    } catch (error) {
-      console.error("❌ Upload failed:", error.message);
-      alert("Failed to upload event: " + error.message);
-    }
-
-    setLoading(false);
-  };
   const fetchEvents = async () => {
     try {
       const snapshot = await getDocs(collection(db, "events"));
@@ -162,54 +67,6 @@ export default function AdminDashboard() {
   const handleEditClick = (event) => {
     setSelectedEvent(event);
     setIsPopupOpen(true);
-  };
-
-  useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "bookings"));
-        const fetchedBookings = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        // Sorting logic
-        const today = new Date().toDateString();
-        const yesterday = new Date(Date.now() - 86400000).toDateString();
-
-        const sortedBookings = { today: [], yesterday: [], older: [] };
-        fetchedBookings.forEach(booking => {
-          const createdDate = new Date(booking.createdDate).toDateString();
-          if (createdDate === today) {
-            sortedBookings.today.push(booking);
-          } else if (createdDate === yesterday) {
-            sortedBookings.yesterday.push(booking);
-          } else {
-            sortedBookings.older.push(booking);
-          }
-        });
-
-        setBookings(sortedBookings);
-      } catch (error) {
-        console.error("Error fetching bookings:", error);
-      }
-    };
-
-    fetchBookings();
-  }, []);
-
-  // Function to handle button click
-  const handleOpenBooking = async (bookingId) => {
-    try {
-      // Update "viewedByAdmin" in Firestore
-      //const bookingRef = doc(db, "bookings", bookingId);
-      //await updateDoc(bookingRef, { viewedByAdmin: true });
-
-      // Navigate to userOrder.jsx with booking ID
-      navigate(`/userOrder/${bookingId}`);
-    } catch (error) {
-      console.error("Error updating booking:", error);
-    }
   };
 
 
@@ -370,7 +227,7 @@ export default function AdminDashboard() {
     return () => window.removeEventListener("toggleSidebar", toggle);
   }, []);
 
- 
+
   return (
     <div className="admin-main-dash">
 
@@ -426,6 +283,12 @@ export default function AdminDashboard() {
                 <path d="M1 6v-.5a.5.5 0 0 1 1 0V6h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V9h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 2.5v.5H.5a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1H2v-.5a.5.5 0 0 0-1 0" />
               </svg></span><NotificationBell />{sidebarExpanded && "Orders"}
             </li>
+            <li className={`sidebar-li ${activeSection === "Users" ? "active-section" : ""}`} onClick={() => setActiveSection("users")}>
+              <span className="sidebar-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journals" viewBox="0 0 16 16">
+                <path d="M5 0h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2 2 2 0 0 1-2 2H3a2 2 0 0 1-2-2h1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1H1a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v9a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1H3a2 2 0 0 1 2-2" />
+                <path d="M1 6v-.5a.5.5 0 0 1 1 0V6h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V9h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 2.5v.5H.5a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1H2v-.5a.5.5 0 0 0-1 0" />
+              </svg></span>{sidebarExpanded && "Users"}
+            </li>
             <li className={`sidebar-li ${activeSection === "Settings" ? "active-section" : ""}`} onClick={() => setActiveSection("settings")}>
               <span className="sidebar-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
                 <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0" />
@@ -447,329 +310,211 @@ export default function AdminDashboard() {
             </li>
           </ul>
         </aside>
+        <div className="user-main-dash">
 
-        <div className="admin-main-content">
-          {activeSection === "addEvent" && (
-            <>
-              {/**stories */}
-              <Stories />
-              
-              <div className="marquee-wrapper">
-                <div className="marquee-track">
-                  {offers.map((offer, index) => {
-                    const randomColor = `hsla(${Math.floor(Math.random() * 360)}, 60%, 70%,0.9)`;
+          <div className="admin-main-content">
+            {activeSection === "addEvent" && (
+              <>
+                {/**stories */}
+                <Stories />
 
-                    return (
-                      <div
-                        key={offer.id}
-                        className="offer-card"
-                        style={{
-                          animationDelay: `${index * 2}s`,
-                          backgroundImage: `linear-gradient(to right,${randomColor}, rgba(0, 0, 0, 0.4)),
+                <div className="marquee-wrapper">
+                  <div className="marquee-track">
+                    {offers.map((offer, index) => {
+                      const randomColor = `hsla(${Math.floor(Math.random() * 360)}, 60%, 70%,0.9)`;
+
+                      return (
+                        <div
+                          key={offer.id}
+                          className="offer-card"
+                          style={{
+                            animationDelay: `${index * 2}s`,
+                            backgroundImage: `linear-gradient(to right,${randomColor}, rgba(0, 0, 0, 0.4)),
                                           url(${offer.backgroundUrl || ""})`,
-                          backgroundSize: "cover",
-                          backgroundPosition: "center",
-                          borderRadius: "12px",
-                          padding: "20px",
-                          color: "#fff",
-                          marginLeft: "20px",
-                          marginTop: "20px",
-                          boxShadow: `0 4px 12px ${randomColor}`,
-                        }}
-                      >
-                        <h2 className="offer-heading">{offer.offerName}</h2>
-                        <p className="offer-description">{offer.description}</p>
-                        <p className="blinking-offer-line">
-                          🎉 Enjoy <strong>{offer.discount}% OFF</strong> on {offer.type} events
-                          from <strong>{offer.fromDate}</strong> to <strong>{offer.uptoDate}</strong> — Don't miss it!
-                        </p>
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                            borderRadius: "12px",
+                            padding: "20px",
+                            color: "#fff",
+                            marginLeft: "20px",
+                            marginTop: "20px",
+                            boxShadow: `0 4px 12px ${randomColor}`,
+                          }}
+                        >
+                          <h2 className="offer-heading">{offer.offerName}</h2>
+                          <p className="offer-description">{offer.description}</p>
+                          <p className="blinking-offer-line">
+                            🎉 Enjoy <strong>{offer.discount}% OFF</strong> on {offer.type} events
+                            from <strong>{offer.fromDate}</strong> to <strong>{offer.uptoDate}</strong> — Don't miss it!
+                          </p>
+                        </div>
+                      );
+                    })}
+
+                  </div>
+                </div>
+
+                <h2 className="admin-main-content-h2">📅 Event Management</h2>
+                <AddEvent fetchEvents={fetchEvents} />
+              </>
+            )}
+            {activeSection === "updateEvent" && (
+              <>
+                <h3>Update Events</h3>
+                <div className="update-events-grid">
+                  {events.map((event) => (
+                    <div key={event.id} className="update-event-card">
+                      <img src={event.mediaUrl} alt={event.eventName} className="event-image" />
+                      <div className="update-event-card-details">
+                        <h2>{event.eventName}</h2>
+                        <p>{event.type} | {event.range} | ₹{event.price}</p>
+                        <button className="event-edit-btn" onClick={() => handleEditClick(event)}>Edit</button>
                       </div>
-                    );
-                  })}
-
-                </div>
-              </div>
-              <h2 className="admin-main-content-h2">📅 Event Management</h2>
-              <div className="admin-addevent-container">
-                <h3 className="admin-addevent-container-h3">Add New Event</h3>
-                <form className="admin-addevent-form" onSubmit={handleAddEvent}>
-                  {/* Media Upload */}
-                  <div className="admin-addevent-input-group">
-                    <label className="admin-addevent-input-lable">Upload Image/Video</label>
-                    <input
-                      className="admin-addevent-input"
-                      type="file"
-                      accept="image/*,video/*"
-                      onChange={handleMediaChange}
-                    />
-                  </div>
-
-                  <div className="admin-addevent-input-group">
-                    <label className="admin-addevent-input-lable">Event Name</label>
-                    <input
-                      className="admin-addevent-input"
-                      type="text"
-                      placeholder="Event Name"
-                      value={eventName}
-                      onChange={(e) => setEventName(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="admin-addevent-input-group">
-                    <label className="admin-addevent-input-lable">Event Type</label>
-                    <select className="admin-addevent-select" value={type} onChange={(e) => setType(e.target.value)}>
-                      <option value="">Select Event Type</option>
-                      <option value="Wedding">Wedding</option>
-                      <option value="Engagement">Engagement</option>
-                      <option value="Birthday">Birthday</option>
-                      <option value="Anniversary">Anniversary</option>
-                      <option value="Festival">Festival</option>
-                    </select>
-                  </div>
-
-                  <div className="admin-addevent-input-group">
-                    <label className="admin-addevent-input-lable">Range</label>
-                    <select className="admin-addevent-select" value={range} onChange={(e) => setRange(e.target.value)}>
-                      <option value="">Select Range</option>
-                      <option value="Normal">Normal</option>
-                      <option value="Medium">Medium</option>
-                      <option value="Luxury">Luxury</option>
-                    </select>
-                  </div>
-
-                  <div className="admin-addevent-input-group">
-                    <label className="admin-addevent-input-lable">Description</label>
-                    <input
-                      className="admin-addevent-input"
-                      type="text"
-                      placeholder="Description"
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="admin-addevent-input-group">
-                    <label className="admin-addevent-input-lable">Price</label>
-                    <input
-                      className="admin-addevent-input"
-                      type="number"
-                      placeholder="Price"
-                      value={price}
-                      onChange={(e) => setPrice(e.target.value)}
-                    />
-                  </div>
-
-                  <div style={{ display: "flex", gap: "10px", marginTop: "1rem" }}>
-                    <button className="admin-addevent-btn" type="submit" disabled={loading}>
-                      {loading ? "Uploading..." : "Add Event"}
-                    </button>
-                    <button className="admin-addevent-btn demo" onClick={handleShowDemo} type="button">
-                      🎨 Show Demo
-                    </button>
-                  </div>
-                </form>
-
-                {/* 🎥 Demo Preview */}
-                {demoMode && mediaPreview && (
-                  <div className="admin-event-demo-card">
-                    <h3>🎉 Event Preview</h3>
-                    {mediaFile.type.startsWith("image/") ? (
-                      <img src={mediaPreview} alt="preview" className="demo-media" />
-                    ) : (
-                      <video controls className="demo-media">
-                        <source src={mediaPreview} type={mediaFile.type} />
-                        Your browser does not support the video tag.
-                      </video>
-                    )}
-                    <p><strong>📌 Name:</strong> {eventName || "N/A"}</p>
-                    <p><strong>📅 Type:</strong> {type || "N/A"}</p>
-                    <p><strong>🔖 Range:</strong> {range || "N/A"}</p>
-                    <p><strong>📝 Description:</strong> {description || "N/A"}</p>
-                    <p><strong>💰 Price:</strong> ₹{price || "0"}</p>
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-          {activeSection === "updateEvent" && (
-            <>
-              <h3>Update Events</h3>
-              <div className="update-events-grid">
-                {events.map((event) => (
-                  <div key={event.id} className="update-event-card">
-                    <img src={event.mediaUrl} alt={event.eventName} className="event-image" />
-                    <div className="update-event-card-details">
-                      <h2>{event.eventName}</h2>
-                      <p>{event.type} | {event.range} | ₹{event.price}</p>
-                      <button className="event-edit-btn" onClick={() => handleEditClick(event)}>Edit</button>
-                    </div>
-                  </div>
-                ))}
-
-
-                {isPopupOpen && selectedEvent && (
-                  <EventUpdate
-                    event={selectedEvent}
-                    onClose={() => setIsPopupOpen(false)}
-                    onUpdate={() => {
-                      fetchEvents(); // <--- this refreshes events after update/delete
-                      setIsPopupOpen(false);
-                    }}
-                  />
-                )}
-
-              </div>
-              
-            </>
-          )}
-
-          {activeSection === "orders" && (
-            <>
-              <div>
-                {/* New Orders */}
-                <h3 className="order-h3">🆕 New Orders</h3>
-                <div className="orders-list">
-                  {Object.values(bookings).flat().filter(b => !b.viewedByAdmin).map((booking) => (
-                    <div key={booking.id} className="order-card">
-                      <h5>{booking.firstName} {booking.lastName}</h5>
-                      <p>📅 Created: {new Date(booking.createdDate).toDateString()}</p>
-                      <p>📅 Event Date: {new Date(booking.eventDate).toDateString()}</p>
-                      <p>🎉 Event: {booking.eventName}</p>
-                      <button className="order-card-btn" onClick={() => handleOpenBooking(booking.id)}>Open</button>
                     </div>
                   ))}
+
+
+                  {isPopupOpen && selectedEvent && (
+                    <EventUpdate
+                      event={selectedEvent}
+                      onClose={() => setIsPopupOpen(false)}
+                      onUpdate={() => {
+                        fetchEvents(); // <--- this refreshes events after update/delete
+                        setIsPopupOpen(false);
+                      }}
+                    />
+                  )}
+
                 </div>
 
-                {/* Completed Orders */}
-                <h3 className="order-h3">✅ Completed Orders</h3>
-                <div className="orders-list">
-                  {Object.values(bookings).flat().filter(b => b.viewedByAdmin).map((booking) => (
-                    <div key={booking.id} className="order-card">
-                      <h5>{booking.firstName} {booking.lastName}</h5>
-                      <p>📅 Created: {new Date(booking.createdDate).toDateString()}</p>
-                      <p>📅 Event Date: {new Date(booking.eventDate).toDateString()}</p>
-                      <p>🎉 Event: {booking.eventName}</p>
-                      <button className="order-card-btn" onClick={() => handleOpenBooking(booking.id)}>Open</button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </>
-          )}
+              </>
+            )}
 
-          {activeSection === "settings" && (
-            <>
-              <h2>⚙️ Admin Settings</h2>
-              <div className="settings-block space-y-6">
-                <div className="add-offer-form">
-                  <h3>Add Offer</h3>
-                  <form onSubmit={handlePublishOffer}>
-                    <select value={offer.type} onChange={(e) => setOffer({ ...offer, type: e.target.value })}>
-                      <option value="">Select Event Type</option>
-                      <option value="Wedding">Wedding</option>
-                      <option value="Engagement">Engagement</option>
-                      <option value="Birthday">Birthday</option>
-                      <option value="Anniversary">Anniversary</option>
-                      <option value="Festival">Festival</option>
-                    </select>
-                    <select value={offer.range} onChange={(e) => setOffer({ ...offer, range: e.target.value })}>
-                      <option value="">Select Range</option>
-                      <option value="Normal">Normal</option>
-                      <option value="Medium">Medium</option>
-                      <option value="Luxury">Luxury</option>
-                    </select>
-                    <input
-                      type="number"
-                      placeholder="Discount Price (%)"
-                      value={offer.discount}
-                      onChange={(e) => setOffer({ ...offer, discount: e.target.value })}
-                      max={50}
-                      required
-                    />
-                    <input
-                      type="date"
-                      value={offer.fromDate}
-                      onChange={(e) => setOffer({ ...offer, fromDate: e.target.value })}
-                      required
-                    />
-                    <input
-                      type="date"
-                      value={offer.uptoDate}
-                      onChange={(e) => setOffer({ ...offer, uptoDate: e.target.value })}
-                      required
-                    />
-                    <input
-                      type="text"
-                      placeholder="Offer Name"
-                      value={offer.offerName}
-                      onChange={(e) => setOffer({ ...offer, offerName: e.target.value })}
-                      required
-                    />
-                    <textarea
-                      placeholder="Offer Description"
-                      value={offer.description}
-                      onChange={(e) => setOffer({ ...offer, description: e.target.value })}
-                      required
-                    ></textarea>
+            {activeSection === "orders" && (
+              <>
+                <AdminOrders />
+              </>
+            )}
+             {activeSection === "users" && (
+              <>
+                <RegisteredUsers/>
+              </>
+            )}
 
-                    {/* Image upload input */}
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      required
-                    />
-                    {offer.backgroundUrl && (
-                      <img
-                        src={offer.backgroundUrl}
-                        alt="Preview"
-                        style={{ width: "100%", marginTop: "10px", borderRadius: "8px" }}
+            {activeSection === "settings" && (
+              <>
+                <h2>⚙️ Admin Settings</h2>
+                <div className="settings-block space-y-6">
+                  <div className="add-offer-form">
+                    <h3>Add Offer</h3>
+                    <form onSubmit={handlePublishOffer}>
+                      <select value={offer.type} onChange={(e) => setOffer({ ...offer, type: e.target.value })}>
+                        <option value="">Select Event Type</option>
+                        <option value="Wedding">Wedding</option>
+                        <option value="Engagement">Engagement</option>
+                        <option value="Birthday">Birthday</option>
+                        <option value="Anniversary">Anniversary</option>
+                        <option value="Festival">Festival</option>
+                      </select>
+                      <select value={offer.range} onChange={(e) => setOffer({ ...offer, range: e.target.value })}>
+                        <option value="">Select Range</option>
+                        <option value="Normal">Normal</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Luxury">Luxury</option>
+                      </select>
+                      <input
+                        type="number"
+                        placeholder="Discount Price (%)"
+                        value={offer.discount}
+                        onChange={(e) => setOffer({ ...offer, discount: e.target.value })}
+                        max={50}
+                        required
                       />
-                    )}
+                      <input
+                        type="date"
+                        value={offer.fromDate}
+                        onChange={(e) => setOffer({ ...offer, fromDate: e.target.value })}
+                        required
+                      />
+                      <input
+                        type="date"
+                        value={offer.uptoDate}
+                        onChange={(e) => setOffer({ ...offer, uptoDate: e.target.value })}
+                        required
+                      />
+                      <input
+                        type="text"
+                        placeholder="Offer Name"
+                        value={offer.offerName}
+                        onChange={(e) => setOffer({ ...offer, offerName: e.target.value })}
+                        required
+                      />
+                      <textarea
+                        placeholder="Offer Description"
+                        value={offer.description}
+                        onChange={(e) => setOffer({ ...offer, description: e.target.value })}
+                        required
+                      ></textarea>
+
+                      {/* Image upload input */}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        required
+                      />
+                      {offer.backgroundUrl && (
+                        <img
+                          src={offer.backgroundUrl}
+                          alt="Preview"
+                          style={{ width: "100%", marginTop: "10px", borderRadius: "8px" }}
+                        />
+                      )}
 
 
-                    <button type="submit">📢 Publish Offer</button>
-                    {offer.id && (
-                      <>
-                        <button type="button" onClick={handleUpdateOffer}>
-                          🔄 Update Offer
-                        </button>
-                        <button type="button" onClick={handleDeleteOffer}>
-                          🗑️ Delete Offer
-                        </button>
-                      </>
-                    )}
-                  </form>
+                      <button type="submit">📢 Publish Offer</button>
+                      {offer.id && (
+                        <>
+                          <button type="button" onClick={handleUpdateOffer}>
+                            🔄 Update Offer
+                          </button>
+                          <button type="button" onClick={handleDeleteOffer}>
+                            🗑️ Delete Offer
+                          </button>
+                        </>
+                      )}
+                    </form>
 
-                  {/* Display offers */}
-                  <div className="offer-list-wrapper">
-                    {offers.map((offer) => (
-                      <div
-                        key={offer.id}
-                        className="offer-container"
-                        style={{
-                          backgroundImage: `url(${offer.backgroundUrl})`,
-                          backgroundSize: "cover",
-                          backgroundPosition: "center",
-                          padding: "20px",
-                          borderRadius: "10px",
-                          marginBottom: "20px",
-                          color: "#fff",
-                        }}
-                      >
-                        <h2 className="offer-heading">{offer.offerName}</h2>
-                        <p className="offer-description">{offer.description}</p>
-                        <p className="blinking-offer-line">
-                          🎉 Enjoy {offer.discount}% OFF on {offer.type} events from{" "}
-                          {offer.fromDate} to {offer.uptoDate} — Don't miss out!
-                        </p>
-                      </div>
-                    ))}
+                    {/* Display offers */}
+                    <div className="offer-list-wrapper">
+                      {offers.map((offer) => (
+                        <div
+                          key={offer.id}
+                          className="offer-container"
+                          style={{
+                            backgroundImage: `url(${offer.backgroundUrl})`,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                            padding: "20px",
+                            borderRadius: "10px",
+                            marginBottom: "20px",
+                            color: "#fff",
+                          }}
+                        >
+                          <h2 className="offer-heading">{offer.offerName}</h2>
+                          <p className="offer-description">{offer.description}</p>
+                          <p className="blinking-offer-line">
+                            🎉 Enjoy {offer.discount}% OFF on {offer.type} events from{" "}
+                            {offer.fromDate} to {offer.uptoDate} — Don't miss out!
+                          </p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </>
-          )}
+              </>
+            )}
+          </div>
         </div>
         {/* Search Bar */}
         <SearchBar

@@ -22,7 +22,7 @@ body {
   justify-content: center;
   padding-left: 0;
   padding-top: 0;
-  margin-top: 60px;
+  /* margin-top: 60px; */
 }
 
 .admin-home-container .admin-main-content-h2,
@@ -71,8 +71,9 @@ body {
 
 /* ===== MAIN CONTENT ===== */
 .admin-main-content {
-  /* flex: 1; Take up all remaining vertical space */
+   /* flex: 1;Take up all remaining vertical space */
   overflow-y: auto;
+
   /* Enable vertical scrolling */
   scroll-behavior: smooth;
   /* display: flex; */
@@ -123,7 +124,7 @@ body {
 }
 
 
-/* ===== EVENT FORM ===== */
+/* ===== EVENT FORM =====
 .admin-addevent-container {
   width:100%;
   padding: 20px;
@@ -132,7 +133,7 @@ body {
   border-radius: 10px;
   border:1px solid #fd7b24;
   box-shadow: 0 4px 8px var(--shadow-light);
-  ;
+  
 }
 
 .dark .admin-addevent-container {
@@ -232,7 +233,7 @@ body {
   box-shadow: 0 4px 8px var(--shadow-dark);
 }
 /*demo card*/
-.admin-event-demo-card {
+/* .admin-event-demo-card {
   background: rgba(71, 153, 247, 0.4);
   color: var(--text-light);
   border: 2px dashed #1470fa;
@@ -245,7 +246,7 @@ body {
 .admin-event-demo-card h3 {
   margin-bottom: 10px;
   color: var(--text-light);
-}
+} */ */
 
 /* Events Grid Responsive Layout */
 .events-grid {
@@ -682,6 +683,15 @@ body {
     left: 5px;
     border-radius:0 0 10px 10px;
 
+    overflow: hidden;
+    /*Hide main scroll, delegate to content */
+    justify-content: first baseline;
+    justify-items: center;
+  
+    transition: all 0.3s ease;
+    border-radius: 0 0 10px 0;
+    border-style: solid;
+    border-width: 0px 2px 2px 2px;
   }
 
   .sidebar.collapsed+.admin-main-dash {

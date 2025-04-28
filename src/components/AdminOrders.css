@@ -1,0 +1,149 @@
+/* my_bookings.css */
+
+/* Wrapper */
+.bookings-wrapper {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+  background: none;
+  min-height: 100vh;
+}
+
+/* Search Input */
+.search-input {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #6366f1;
+  background-color: #ffffff;
+}
+
+/* Export Buttons */
+.export-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 2rem;
+}
+
+.export-btn,
+.print-btn {
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.export-btn {
+  background-color: #4f46e5;
+  color: #fff;
+}
+
+.export-btn:hover {
+  background-color: #4338ca;
+}
+
+.print-btn {
+  background-color: #10b981;
+  color: #fff;
+}
+
+.print-btn:hover {
+  background-color: #059669;
+}
+
+/* Table Section */
+.table-section {
+  margin-top: 3rem;
+}
+
+.table-section h3 {
+  font-size: 24px;
+  margin-bottom: 1rem;
+  color: #374151;
+}
+
+/* Bookings Table */
+.bookings-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.bookings-table th,
+.bookings-table td {
+  padding: 12px 15px;
+  text-align: center;
+}
+
+.bookings-table th {
+  background-color: #1e90ff;
+  font-weight: 600;
+  color: #374151;
+  font-size: 15px;
+}
+
+.bookings-table td {
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.bookings-table tbody tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.bookings-table tbody tr:hover {
+  background-color: #e0f2fe;
+  transition: background-color 0.3s ease;
+}
+
+/* SVG Icons inside table */
+.bookings-table svg {
+  vertical-align: middle;
+  color: #10b981;
+}
+
+/* Open button in table */
+.bookings-table td button {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.bookings-table td button:hover {
+  background-color: #2563eb;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .export-controls {
+    flex-direction: column;
+  }
+
+  .bookings-table th, .bookings-table td {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .bookings-wrapper {
+    padding: 1rem;
+  }
+}

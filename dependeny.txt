@@ -25,6 +25,19 @@ npm create vite@latest CeleHUB --template react
 To address all issues, run:
   >> npm audit fix
 
+Git comment
+Dell@DESKTOP-8DI3VB6 MINGW64 ~/Desktop/CeleHUB-MyProject/CeleHUB (main)
+$ git add .
+
+Dell@DESKTOP-8DI3VB6 MINGW64 ~/Desktop/CeleHUB-MyProject/CeleHUB (main)
+$ git commit -m "forth"
+[main b0cc8b4] forth
+ 1 file changed, 10 insertions(+)
+
+Dell@DESKTOP-8DI3VB6 MINGW64 ~/Desktop/CeleHUB-MyProject/CeleHUB (main)
+$ git push origin main
+
+
 
 firestore rule
 new.....................
@@ -33,16 +46,18 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     // 🔁 Admin Role Helper Function
-    function isAdmin() {
-  return request.auth != null &&
-         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
-}
+		function isAdmin() {
+  		return request.auth != null &&
+    		get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+		}
 
-    // 🔹 Users Collection
-    match /users/{userId} {
-      allow read, update: if request.auth != null && request.auth.uid == userId;
-      allow create: if request.auth != null;
-    }
+		// 🔹 Users Collection
+		match /users/{userId} {
+  		allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+  		allow update: if request.auth != null && (request.auth.uid == userId || isAdmin());
+ 			allow create: if request.auth != null;
+		}
+
 
     // 🔹 Events Collection (Admins Only)
     match /events/{eventId} {

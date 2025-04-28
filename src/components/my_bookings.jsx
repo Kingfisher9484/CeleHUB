@@ -135,7 +135,7 @@ const exportToPDF = () => {
 
   return (
     <div className="bookings-wrapper">
-      <h2 className="heading">📋 My Bookings</h2>
+      {/*<h2 className="heading">📋 My Bookings</h2>*/}
 
       <input
         className="search-input"
