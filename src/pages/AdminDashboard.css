@@ -677,7 +677,17 @@ body {
     justify-content: center;
     margin-left: 0px;
   }
+  /* ===== MAIN CONTENT ===== */
+  .admin-main-dash {
+    left: 5px;
+    border-radius:0 0 10px 10px;
 
+  }
+
+  .sidebar.collapsed+.admin-main-dash {
+    left: 5px;
+    right: 5px;
+  }
   .admin-main-content {
     margin-left: 0px;
     /* Offset for sidebar */
