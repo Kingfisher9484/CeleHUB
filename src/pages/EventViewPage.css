@@ -1,0 +1,196 @@
+.event-page-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.event-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.event-page-header h1 {
+  font-size: 2.5rem;
+  color: var(--text-light);
+}
+.dark .event-page-header h1 {
+  color: var(--text-dark);
+}
+.share-button {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.share-button:hover {
+  background-color: #0056b3;
+}
+
+.event-page-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.event-page-image-section {
+  flex: 1 1 100%;
+}
+
+.event-image {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.event-page-details {
+  flex: 1 1 500px;
+}
+
+.event-page-details p {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-light);
+}
+.dark .event-page-details p {
+  color: var(--text-dark);
+}
+
+.event-description {
+  margin-top: 1rem;
+  line-height: 1.6;
+}
+
+.event-calendar {
+  margin-top: 1.5rem;
+  max-width:400px;
+}
+
+.booked-date {
+  background: #ffcccc !important;
+  text-decoration: line-through;
+  color: #a00;
+}
+
+.available-date {
+  background: #e6ffe6 !important;
+  color: rgb(202, 242, 202);
+}
+
+
+
+.book-now-btn:active{
+  background-color: #1e7e34;
+}
+
+@media screen and (max-width: 768px) {
+  .event-page-content {
+    flex-direction: column;
+  }
+
+  .event-page-header h1 {
+    font-size: 2rem;
+  }
+
+  .book-now-btn {
+    width: 100%;
+  }
+}
+
+.calendar-container .calendar {
+  padding: 10px;
+  background: #ffebcc;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #d35400;
+  display: inline-block;
+}
+
+/* ==== Book Now Button ==== */
+.book-now-btn {
+  margin-top: auto;
+  align-self: flex-end;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #ff5722, #ff9800);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 4px 10px rgba(255, 87, 34, 0.3);
+}
+
+.popup-book-now-btn:hover {
+  background: linear-gradient(135deg, #e64a19, #ff6f00);
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 15px rgba(255, 87, 34, 0.5);
+}
+
+/* ==== Rating Stars ==== */
+.rating-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.star-rating .star {
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  color: #ccc;
+}
+
+.star-rating .star.filled {
+  color: gold;
+}
+
+.rating-label {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 5px;
+}
+
+/* ==== Divider ==== */
+.event-book-popup-divider {
+  width: 100%;
+  height: 1px;
+  background: #ddd;
+  margin: 16px 0;
+}
+
+/* ==== Responsive Design ==== */
+@media (max-width: 768px) {
+  .event-book-popup-container {
+    grid-template-columns: 1fr;
+    width: 90%;
+    max-height: 95vh;
+    overflow-y: auto;
+    overflow-x: auto;
+  }
+
+  .event-popup-image {
+    min-width: 100%;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .event-book-popup-right {
+    padding: 24px;
+  }
+
+  .event-book-popup-book-now-btn {
+    align-self: center;
+    width: 100%;
+  }
+}

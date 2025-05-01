@@ -5,6 +5,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import UserDashboard from "./pages/UserDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Home from "./pages/Home";
+import EventViewPage from "./pages/EventViewPage";
 import EventBookingPage from "./pages/EventBookingPage";
 import UserOrder from "./pages/userOrder";
 import UserBooking from "./pages/userBooking";
@@ -24,6 +25,7 @@ function App() {
         {/* Protected Routes for Users */}
         <Route element={<ProtectedRoute role="user" />}>
           <Route path="/user" element={<UserDashboard />} />
+          <Route path="/eventview/:id" element={<EventViewPage />} />
           <Route path="/eventbooking/:eventId" element={<EventBookingPage />} />
           <Route path="/userBooking/:bookingId" element={<UserBooking />} />
           <Route path="/UserProfile/:uid" element={<UserProfile />} />

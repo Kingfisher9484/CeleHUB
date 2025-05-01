@@ -111,3 +111,15 @@ body {
   .sidebar hr{
     border: 1.30px solid black; 
   }
+  
+/* Example */
+.sidebar.hidden {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    display: block !important;
+    /* Always show on desktop */
+  }
+}

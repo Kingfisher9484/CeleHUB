@@ -24,7 +24,11 @@ h3 {
 .sidebar.hidden {
   display: none;
 }
-
+.active-section {
+  background: linear-gradient(125deg, #a734ee65, #3d43fe65);
+  color: #fff;
+  border-radius: 10px;
+}
 @media (min-width: 768px) {
   .sidebar {
     display: block !important;
@@ -791,27 +795,7 @@ h3 {
     justify-content: flex-start;
   }
 
-  /*
-  .user-filter-section {
-      padding: 5px 2px;
-      position: relative;
-      overflow: hidden;
-      margin: 0px;
-      align-items: start;
-      align-self: left;
-    }
-  
-    .user-event-filters {
-      display: flex;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      padding: 20px;
-      cursor: grab;
-      gap: 20px;
-      scrollbar-width: none;
-      justify-content: start;
-    }
-  */
+
   .user-event-filters::-webkit-scrollbar {
     display: none;
   }

@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { db } from "../../Firebase/Firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import SearchBar from "../components/SearchBar";
-import EventBookingPopup from "../components/EventBookingPopup";
-import { Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth"; // Added onAuthStateChanged
 import "./FAQs.css";
@@ -23,13 +21,10 @@ import MyBookings from "../components/my_bookings";
 const UserDashboard = ({ currentUser, comments }) => {
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
-  const [bookings, setBookings] = useState([]);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [activeSection, setActiveSection] = useState("Events");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [filter, setFilter] = useState("All");
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -68,7 +63,7 @@ const UserDashboard = ({ currentUser, comments }) => {
 
   const eventTypes = ["All", "Wedding", "Engagement", "Birthday", "Anniversary", "Festival"];
   //const filteredEvents = filter === "All" ? events : events.filter(event => event.type === filter);
- 
+
   //event share via availble apps
   const handleShare = (event) => {
     if (navigator.share) {
@@ -77,13 +72,13 @@ const UserDashboard = ({ currentUser, comments }) => {
         text: `Check out this event: ${event.eventName}`,
         url: window.location.origin + `/event/${event.id}`,
       })
-      .then(() => console.log("Shared successfully!"))
-      .catch((error) => console.error("Error sharing", error));
+        .then(() => console.log("Shared successfully!"))
+        .catch((error) => console.error("Error sharing", error));
     } else {
       alert("Sharing is not supported on this browser.");
     }
   };
-  
+
   //display offer
 
   const [offers, setOffers] = useState([]);
@@ -142,23 +137,7 @@ const UserDashboard = ({ currentUser, comments }) => {
     return () => window.removeEventListener("toggleSidebar", toggle);
   }, []);
 
-  /*  const [sidebarVisible, setSidebarVisible] = useState(false);
-    
-      useEffect(() => {
-        const toggle = () => setSidebarVisible((prev) => !prev);
-        window.addEventListener("toggleSidebar", toggle);
-    
-        return () => window.removeEventListener("toggleSidebar", toggle);
-      }, []);
-      <div className="admin-home-container">
-        {/* Sidebar *
-        {sidebarVisible && (
-          <div className="mobile-sidebar">
-            {/* Your Sidebar Component *
-            <aside className={`sidebar ${sidebarExpanded ? "expanded" : "collapsed"}`}>
-              <div className={`sidebar-header ${sidebarExpanded ? "sidebar-expanded" : "sidebar-collapsed"}`}>
-                <button
-      */
+
   return (
     <div className="user-home-container">
       <aside
@@ -288,10 +267,8 @@ const UserDashboard = ({ currentUser, comments }) => {
                     <div
                       key={event.id}
                       className="modern-event-card"
-                      onClick={() => {
-                        setSelectedEvent(event);
-                        setIsPopupOpen(true);
-                      }}
+                      onClick={() => navigate(`/eventview/${event.id}`)}
+
                     >
                       <div className="modern-event-img">
                         <img
@@ -306,24 +283,6 @@ const UserDashboard = ({ currentUser, comments }) => {
                         <ShowStar eventId={event.id} />
 
                         <p className="event-price">₹{event.price}</p>
-                        <button
-                          className="share-via-button"
-                          onClick={(e) => {
-                            e.stopPropagation(); // Prevent triggering card click
-                            handleShare(event);
-                          }}
-                          aria-label="Share Event"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="18"
-                            height="18"
-                            fill="currentColor"
-                            viewBox="0 0 16 16"
-                          >
-                            <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM10.964 4.686l-5.226 2.61a1.5 1.5 0 1 0 .15 2.917l5.136 2.435a1.5 1.5 0 1 0 .357-.933L6.486 9.29a1.5 1.5 0 0 0-.086-.58l5.276-2.633a1.5 1.5 0 1 0-.712-.823zM2.5 11a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />
-                          </svg>
-                        </button>
 
                         <span className="view-more-text">View More...</span>
                       </div>
@@ -339,19 +298,6 @@ const UserDashboard = ({ currentUser, comments }) => {
                 )}
 
               </div>
-              {/* Event Booking Popup */}
-              {selectedEvent && (
-                <EventBookingPopup
-                  event={selectedEvent}
-                  onClose={() => setSelectedEvent(null)}
-                />
-              )}
-              {isPopupOpen && (
-                <EventBookingPopup
-                  event={selectedEvent}
-                  onClose={() => setIsPopupOpen(false)}
-                />
-              )}
 
             </>
           )}
