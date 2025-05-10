@@ -23,8 +23,8 @@
   
     padding: 4px 10px;
     border-radius: 10px 10px 0 0;
-  
-    z-index: 998;
+
+    z-index: 2;
   }
   
   
@@ -33,7 +33,68 @@
   } */
   
   /* Logo */
-  .navbar-brand h3{
+  /* Main logo styles */
+/* Container must be relative */
+.app-logo {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  z-index: 4;
+}
+
+.nav-brand {
+  /* font-family: 'Poppins', sans-serif; */
+  font-family: 'Pacifico', cursive;
+  font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #ff6ec4, #7873f5, #66e0e3, #ff6ec4);
+  background-size: 300% 300%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 5s ease infinite;
+  display: inline-block;
+  position: relative;
+  z-index: 4;
+}
+
+/* Stars are hidden by default */
+/* Stars are hidden by default */
+.stars {
+  position: absolute;
+  top: -0.7rem;
+  left: 100%;
+  transform: translateX(-50%);
+  font-size: 1.1rem;
+  opacity: 0;                       /* Hidden initially */
+  pointer-events: none;
+  color: gold;
+  z-index: 5;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Only show stars when hovering the full logo area */
+.app-logo:hover .stars {
+  opacity: 0;
+  animation: twinkle 1.5s infinite ease-in-out;
+}
+
+
+/* Gradient background animation */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Star blinking animation */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.3); }
+}
+
+
+  /* .navbar-brand h3{
     font-weight: bold;
     padding: 20px 5px;
     align-self:center;
@@ -47,7 +108,7 @@
     text-decoration: none;
     color: #f7c2fc; 
    }
-  
+   */
   /* Navbar Links */
   .navbar-links {
     display: flex;

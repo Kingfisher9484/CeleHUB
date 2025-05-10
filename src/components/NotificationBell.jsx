@@ -22,7 +22,7 @@ const NotificationBell = () => {
   return (
     <div className="notification-bell" >
       {newBookingsCount > 0 && (
-        <span className="badge bg-danger" style={{ width:"10" ,height:"10" ,fontSize: "0.7rem", cursor: "pointer", zIndex:"25000",position:"absolute",marginLeft:"-17px",marginTop:"-17px"}}>{newBookingsCount}</span>
+        <span className="badge bg-danger" style={{ padding:"2px" ,fontSize: "0.7rem", cursor: "pointer", zIndex:"25000",position:"absolute",marginLeft:"-17px",marginTop:"-17px", background:"red",borderRadius:"5px"}}>{newBookingsCount}</span>
       )}
       
       

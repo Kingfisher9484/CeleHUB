@@ -27,11 +27,14 @@ body {
     border-color: #bab5b9;  
     color: var(--text-light);
     transition: width 0.3s ease;
-    z-index: 998;
+    z-index: 2;
     transition: all 0.3s ease-in-out;
   }
   
-  
+  .dark .sidebar{
+    background: linear-gradient(135deg, #360a13, #091446,#0a432f); /*vibrant gradient*/
+
+  }
   
   
   .sidebar.collapsed {

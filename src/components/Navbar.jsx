@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { auth, db } from "../../Firebase/Firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { getDoc, doc } from "firebase/firestore";
@@ -16,6 +16,24 @@ const CustomNavbar = () => {
   const [showProfile, setShowProfile] = useState(false);
   const [profilePic, setProfilePic] = useState(null);
   const navigate = useNavigate();
+  const profileRef = useRef(null);
+  const menuRef = useRef(null);
+  
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Close profile dropdown if clicked outside
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setShowProfile(false);
+      }
+      // Close mobile menu if clicked outside
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -76,15 +94,18 @@ const CustomNavbar = () => {
           </button>
         )}
 
-        <Link to="/" className="navbar-brand">
-          <h3><span className="nav-brand">CeleHUB</span></h3>
+        <Link to="/" className="navbar-brand app-logo">
+          <h3 className="logo-heading" style={{ position: "relative" }}>
+            <span className="stars">✨</span>
+            <span className="nav-brand">CeleHUB</span>
+          </h3>
         </Link>
 
         <button className="navbar-toggle" onClick={() => setMenuOpen(!menuOpen)}>
           <FaBars />
         </button>
 
-        <ul className={`navbar-links ${menuOpen ? "active" : ""}`}>
+        <ul className={`navbar-links ${menuOpen ? "active" : ""}`} ref={menuRef}>
           <li><ThemeToggle /></li>
 
           {role === "admin" && (
@@ -94,8 +115,8 @@ const CustomNavbar = () => {
             <li className="dashboard"><Link to="/user">User Dashboard</Link></li>
           )}
 
-          <div className="profile-con">
-            {profilePic ? (
+            <div className="profile-con" ref={profileRef}>
+              {profilePic ? (
               <img
                 src={profilePic}
                 alt="Profile"

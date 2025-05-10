@@ -4,7 +4,7 @@ import AuthForm from "./pages/AuthForm";
 import ProtectedRoute from "./components/ProtectedRoute";
 import UserDashboard from "./pages/UserDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import EventViewPage from "./pages/EventViewPage";
 import EventBookingPage from "./pages/EventBookingPage";
 import UserOrder from "./pages/userOrder";

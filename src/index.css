@@ -27,7 +27,7 @@ body {
   min-height: 100vh;
   padding: 0;
   margin-top: -60px;
-  background-color: rgb(115, 3, 214);
+  background: linear-gradient(135deg, #360a13, #091446,#0a432f); /*vibrant gradient*/
   /* background-image: url(public/images/IMG-20250404-WA0004.jpg); */
   /* background: linear-gradient(120deg,var(--bg-light) 15%, #f9d292 24%, #f09308 28%, #ef1a8f 32%, #a734ee 36%, #3d43fe 40%,var(--bg-light) 45%); */
 }

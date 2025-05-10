@@ -23,10 +23,9 @@ export default function AuthForm() {
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
 
-
   const handleAuth = async (e) => {
     e.preventDefault();
-    setError({}); // Reset all errors
+    setError({});
 
     try {
       if (isSignup) {
@@ -34,17 +33,14 @@ export default function AuthForm() {
           setError((prev) => ({ ...prev, name: "Please enter full name" }));
           return;
         }
-
         if (!email) {
           setError((prev) => ({ ...prev, email: "Email is required" }));
           return;
         }
-
         if (!password) {
           setError((prev) => ({ ...prev, password: "Password is required" }));
           return;
         }
-
         if (role === "admin" && adminPasskey !== "CeleHUBadmin") {
           setError((prev) => ({ ...prev, passkey: "Invalid Admin Passkey" }));
           return;
@@ -69,7 +65,6 @@ export default function AuthForm() {
           setError((prev) => ({ ...prev, email: "Email is required" }));
           return;
         }
-
         if (!password) {
           setError((prev) => ({ ...prev, password: "Password is required" }));
           return;
@@ -87,9 +82,7 @@ export default function AuthForm() {
         }
       }
     } catch (err) {
-      console.log("Firebase Auth Error:", err);
       const code = err.code;
-
       if (code === "auth/user-not-found") {
         setError((prev) => ({ ...prev, email: "No user found with this email." }));
       } else if (code === "auth/wrong-password") {
@@ -108,23 +101,9 @@ export default function AuthForm() {
 
   const handleGoogleAuth = async () => {
     setError({});
-
-    if (isSignup) {
-      if (!role) {
-        setError({ role: "Please select a role." });
-        return;
-      }
-
-      if (role === "admin") {
-        if (!adminPasskey) {
-          setError({ passkey: "Admin passkey is required." });
-          return;
-        }
-        if (adminPasskey !== "CeleHUBadmin") {
-          setError({ passkey: "Invalid Admin Passkey." });
-          return;
-        }
-      }
+    if (isSignup && role === "admin" && adminPasskey !== "CeleHUBadmin") {
+      setError({ passkey: "Invalid Admin Passkey" });
+      return;
     }
 
     try {
@@ -140,7 +119,7 @@ export default function AuthForm() {
             email: user.email,
             firstName: "Google",
             lastName: "User",
-            role: role,
+            role,
             createdAt: new Date(),
           });
           alert("Signup successful! You can now log in.");
@@ -167,77 +146,43 @@ export default function AuthForm() {
         <h2>{isSignup ? "Sign Up" : "Login"}</h2>
 
         {isSignup && (
-          <div className="name-fields">
-            <input type="text" placeholder="First Name" value={firstName}
-              onChange={(e) => setFirstName(e.target.value)} />
-            <input type="text" placeholder="Last Name" value={lastName}
-              onChange={(e) => setLastName(e.target.value)} />
-          </div>
+          <>
+            <div className="name-fields">
+              <input type="text" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+              <input type="text" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+            </div>
+            {error.name && <p className="auth-error">{error.name}</p>}
+          </>
         )}
-        {error.name && <p className="auth-error">{error.name}</p>}
 
         {isSignup && (
           <div className="role-switcher">
-            <div
-              className={`role-option ${role === "user" ? "active" : ""}`}
-              onClick={() => setRole("user")}
-            >
-              User
-            </div>
-            <div
-              className={`role-option ${role === "admin" ? "active" : ""}`}
-              onClick={() => setRole("admin")}
-            >
-              Admin
-            </div>
+            <div className={`role-option ${role === "user" ? "active" : ""}`} onClick={() => setRole("user")}>User</div>
+            <div className={`role-option ${role === "admin" ? "active" : ""}`} onClick={() => setRole("admin")}>Admin</div>
           </div>
         )}
 
         {isSignup && role === "admin" && (
           <>
-            <input
-              type="password"
-              placeholder="Admin Passkey"
-              value={adminPasskey}
-              onChange={(e) => setAdminPasskey(e.target.value)}
-            />
+            <input type="password" placeholder="Admin Passkey" value={adminPasskey} onChange={(e) => setAdminPasskey(e.target.value)} />
             {error.passkey && <p className="auth-error">{error.passkey}</p>}
           </>
         )}
 
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-        />
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
         {error.email && <p className="error-text">{error.email}</p>}
 
         <div className="auth-password-wrapper">
-          <input
-            type={showPassword ? "text" : "password"}
-            className="auth-password-input"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <input type={showPassword ? "text" : "password"} className="auth-password-input" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
           <span onClick={() => setShowPassword(!showPassword)} className="toggle-eye">
             {showPassword ? (
-              // Hidden icon
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-slash" viewBox="0 0 16 16">
-                <path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755q-.247.248-.517.486z" />
-                <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829" />
-                <path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z" />
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-slash" viewBox="0 0 16 16">
+                <path d="..." />
               </svg>
-
             ) : (
-              // Visible icon
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
-                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
-                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye" viewBox="0 0 16 16">
+                <path d="..." />
               </svg>
-
             )}
           </span>
         </div>
@@ -249,16 +194,11 @@ export default function AuthForm() {
 
         <div className="divider">or</div>
 
-        <button type="button" className="google-btn" onClick={handleGoogleAuth}>
-          Continue with Google
-        </button>
+        <button type="button" className="google-btn" onClick={handleGoogleAuth}>Continue with Google</button>
 
         <p className="toggle-text">
           {isSignup ? "Already have an account? " : "Don't have an account? "}
-          <span onClick={() => {
-            setIsSignup(!isSignup);
-            setError({});
-          }}>
+          <span onClick={() => { setIsSignup(!isSignup); setError({}); }}>
             {isSignup ? "Login" : "Sign Up"}
           </span>
         </p>
@@ -266,6 +206,7 @@ export default function AuthForm() {
     </div>
   );
 }
+
 /*import React, { useState } from "react";
 import { auth, db } from "../../Firebase/Firebase";
 import {

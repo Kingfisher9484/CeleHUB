@@ -1,9 +1,116 @@
- /* General Styles */
+ /* Home.css */
+
+.home-container {
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+    background: none;
+    color: #333;
+  }
+  
+  .hero-section {
+    background: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
+    padding: 100px 20px;
+    text-align: center;
+    position: relative;
+    animation: fadeIn 1.2s ease-in-out;
+  }
+  
+  .hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: #2c3e50;
+    animation: slideDown 1s ease forwards;
+  }
+  
+  .hero-content p {
+    font-size: 1.25rem;
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #444;
+    animation: fadeIn 2s ease;
+  }
+  
+  .hero-btn {
+    background-color: #e67e22;
+    color: #fff;
+    font-size: 1.1rem;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    animation: popIn 1s ease-out;
+  }
+  
+  .hero-btn:hover {
+    background-color: #d35400;
+    transform: scale(1.05);
+  }
+  
+  /* Keyframes */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideDown {
+    from {
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes popIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .hero-content h1 {
+      font-size: 2.2rem;
+    }
+  
+    .hero-content p {
+      font-size: 1rem;
+    }
+  
+    .hero-btn {
+      padding: 10px 22px;
+      font-size: 1rem;
+    }
+  }
+  
+  
+  
+  
+  
+  /* General Styles
  body {
      margin: 0;
-    /* font-family: 'Bitter', serif; or Roboto, or any font you choose */
+    /* font-family: 'Bitter', serif; or Roboto, or any font you choose *
      font-family: 'Roboto', sans-serif;
-     /* font-family: "Poppins", sans-serif; */
+     /* font-family: "Poppins", sans-serif; *
 
      padding: 0;
      background: linear-gradient(to right, #141e30, #243b55);
@@ -18,7 +125,7 @@
      padding: 100px 20px 20px 20px;
  }
 
- /* Hero Section */
+ /* Hero Section *
  .home-hero {
      padding: 50px 20px;
      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
@@ -36,6 +143,7 @@
 
  .home-page-h1 {
      color: #ffffff;
+     font-family: 'Pacifico', cursive;
 
  }
 
@@ -71,7 +179,7 @@
 
  }
 
- /* Scrollable Events Section */
+ /* Scrollable Events Section *
  .home-event-scroll {
      padding: 5px 2px;
      position: relative;
@@ -142,7 +250,7 @@
      background: #c70039;
  }
 
- /* About CeleHub Section */
+ /* About CeleHub Section *
  .home-about-celehub,
  .home-services,
  .home-contact {
@@ -207,4 +315,4 @@
  .home-contact-links .home-contact-link:hover {
      color: #ff5733;
      transform: scale(1.1);
- }
+ } */
