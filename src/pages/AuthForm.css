@@ -147,6 +147,28 @@
   margin-bottom: 8px;
   text-align: left;
 }
+.otp-btn {
+  margin-top: 10px;
+  padding: 8px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.otp-btn:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+.captcha-box {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-left: 4px solid #0077cc;
+  font-size: 14px;
+}
 
 /* Animations */
 @keyframes fadeIn {

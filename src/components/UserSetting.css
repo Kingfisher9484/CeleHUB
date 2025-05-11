@@ -1,0 +1,43 @@
+.user-settings {
+  max-width: 100%;
+  margin: auto;
+  padding: 2rem;
+  border-radius: 12px;
+  background: var(--bg-light2);
+  color: var(--text-light);
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
+}
+.dark .user-settings {
+  color: var(--text-dark);
+  background: var(--bg-dark2);
+  box-shadow: 0 0 12px rgba(152, 152, 152, 0.1);
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.setting-row label {
+  font-weight: bold;
+  color: var(--text-light);
+}
+.dark .setting-row label {
+  color: var(--text-dark);
+}
+
+.save-btn {
+  margin-top: 1.5rem;
+  padding: 10px 20px;
+  background-color: #4c8bf5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.save-btn:hover {
+  background-color: #3a6dd3;
+}

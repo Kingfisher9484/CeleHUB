@@ -13,12 +13,12 @@
 }
 .story-header{
     text-align: start;
-    padding: 0 0 0 10pxs;
+    padding: 0 0 0 10px;
     font-weight: bold;
     color:var(--text-light)
 }
-.dark.story-header{
-    color:white;
+.dark .story-header{
+    color:var(--text-dark);
 }
 .stories-row {
     padding: 0 10px;

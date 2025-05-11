@@ -12,10 +12,14 @@ import LoadingCard from '../components/LoadingCard';
 import ShowStar from '../EventPopup/showStar'; // Adjust path based on location
 import { color } from "framer-motion";
 // In your AdminPage.jsx or wherever you want to use it
-import Comment from "../components/Comment"; // adjust the path
 import Stories from "../components/Stories";
 import "./my-bookings(userdash).css";
 import MyBookings from "../components/my_bookings";
+import UserSetting from '../components/UserSetting';
+import CommentSection from '../components/CommentSection';
+
+
+
 
 {/* Other sections here */ }
 const UserDashboard = ({ currentUser, comments }) => {
@@ -27,7 +31,6 @@ const UserDashboard = ({ currentUser, comments }) => {
   const [filter, setFilter] = useState("All");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   // Firebase Auth User ID
 
   const [userId, setUserId] = useState(null); // Track user ID state
@@ -314,17 +317,14 @@ const UserDashboard = ({ currentUser, comments }) => {
               <h2>⚙️ Settings</h2>
               <div className="settings-block">
                 <p>Settings options go here</p>
+                <UserSetting />
               </div>
             </>
           )}
           {/*User Comments*/}
           {activeSection === "comments" && (
             <>
-              <Comment
-                activeSection={activeSection}
-                currentUser={currentUser}
-                comments={comments}
-              />
+              <CommentSection/>
             </>
           )}
           {/*User FAQs*/}

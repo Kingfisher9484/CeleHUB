@@ -19,7 +19,7 @@ import "./../components/SearchBar.css"
 import AddEvent from "../components/AddEvent";
 import AdminOrders from "../components/AdminOrders";
 import RegisteredUsers from "../components/RegisteredUsers";
-//import { Timestamp } from "firebase/firestore";
+import UserSetting from '../components/UserSetting';
 
 export default function AdminDashboard() {
 
@@ -405,6 +405,7 @@ export default function AdminDashboard() {
               <>
                 <h2>⚙️ Admin Settings</h2>
                 <div className="settings-block space-y-6">
+                      <UserSetting />
                   <div className="add-offer-form">
                     <h3>Add Offer</h3>
                     <form onSubmit={handlePublishOffer}>

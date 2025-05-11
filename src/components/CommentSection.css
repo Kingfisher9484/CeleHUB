@@ -1,0 +1,72 @@
+.comment-section {
+  width: 100%;
+  max-width: 700px;
+  margin: 2rem auto;
+  background: #f9f9f9;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.comment-input,
+.reply-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 10px;
+  resize: none;
+  transition: border 0.3s;
+}
+
+.comment-input:focus,
+.reply-input:focus {
+  border-color: #007bff;
+}
+
+.comment-btn,
+.reply-btn {
+  margin-top: 8px;
+  background: #007bff;
+  color: white;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.comment-btn:hover,
+.reply-btn:hover {
+  background: #0056b3;
+}
+
+.comment {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 0.8rem;
+  margin-top: 1rem;
+}
+
+.reply-section {
+  margin-top: 10px;
+  padding-left: 20px;
+}
+
+.reply {
+  background: #f0f0f0;
+  margin-top: 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.reply-toggle {
+  background: none;
+  color: #007bff;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0;
+  margin-top: 6px;
+}

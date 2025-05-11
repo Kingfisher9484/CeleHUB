@@ -1,33 +1,42 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { auth } from "../../Firebase/Firebase"; // Firebase authentication instance
+import { auth } from "../../Firebase/Firebase"; // Adjust if path differs
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Track authentication state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-      setLoading(false); // Stop loading once user state is known
+      if (user) {
+        setCurrentUser({
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.imageURL,
+          emailVerified: user.emailVerified,
+          phoneNumber: user.phoneNumber,
+        });
+      } else {
+        setCurrentUser(null);
+      }
+      setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
 
-  // Login function
   const login = async (email, password) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       console.error("Login error:", error.message);
-      throw error; // Rethrow to handle errors in UI
+      throw error;
     }
   };
 
-  // Logout function
   const logout = async () => {
     try {
       await signOut(auth);
@@ -38,12 +47,11 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={{ currentUser, login, logout, loading }}>
-      {!loading && children} {/* Prevent rendering until loading completes */}
+      {!loading && children}
     </AuthContext.Provider>
   );
 }
 
-// Custom hook to access authentication context
 export function useAuth() {
   return useContext(AuthContext);
 }
