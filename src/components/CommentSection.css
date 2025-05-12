@@ -1,5 +1,5 @@
 .comment-section {
-  width: 100%;
+  max-width: 100%;
   max-width: 700px;
   margin: 2rem auto;
   background: #f9f9f9;
@@ -10,7 +10,7 @@
 
 .comment-input,
 .reply-input {
-  width: 100%;
+  max-width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;

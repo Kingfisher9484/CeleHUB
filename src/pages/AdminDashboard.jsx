@@ -20,6 +20,7 @@ import AddEvent from "../components/AddEvent";
 import AdminOrders from "../components/AdminOrders";
 import RegisteredUsers from "../components/RegisteredUsers";
 import UserSetting from '../components/UserSetting';
+import CommentSection from '../components/CommentSection';
 
 export default function AdminDashboard() {
 
@@ -44,7 +45,7 @@ export default function AdminDashboard() {
   });
   const [offers, setOffers] = useState([]);
   const [previewImage, setPreviewImage] = useState("");
- 
+
   //const [filteredEvents, setFilteredEvents] = useState([]);
 
   const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dxavefpkp/upload";
@@ -395,17 +396,21 @@ export default function AdminDashboard() {
                 <AdminOrders />
               </>
             )}
-             {activeSection === "users" && (
+            {activeSection === "users" && (
               <>
-                <RegisteredUsers/>
+                <RegisteredUsers />
               </>
             )}
-
+            {activeSection === "comments" && (
+              <>
+                <CommentSection />
+              </>
+            )}
             {activeSection === "settings" && (
               <>
                 <h2>⚙️ Admin Settings</h2>
                 <div className="settings-block space-y-6">
-                      <UserSetting />
+                  <UserSetting />
                   <div className="add-offer-form">
                     <h3>Add Offer</h3>
                     <form onSubmit={handlePublishOffer}>
