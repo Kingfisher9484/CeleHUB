@@ -3,11 +3,6 @@ import { auth, db } from "../../Firebase/Firebase";
 import { collection, getDoc, getDocs, doc, updateDoc, deleteDoc, addDoc, serverTimestamp } from "firebase/firestore";
 import SearchBar from "../components/SearchBar"; // Import the SearchBar component
 import { useNavigate } from "react-router-dom";
-import { Search, User, Settings } from "lucide-react";
-/*
-<Search size={24} />
-<User size={24} />
-<Settings size={24} />*/
 import "./AdminDashboard.css";
 import NotificationBell from "../components/NotificationBell"; // Import notification component
 import Stories from "../components/Stories";
@@ -32,19 +27,8 @@ export default function AdminDashboard() {
   const [activeSection, setActiveSection] = useState("addEvent"); // Default section to display
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const navigate = useNavigate();
-  const [offer, setOffer] = useState({
-    type: "",
-    range: "",
-    discount: "",
-    fromDate: "",
-    uptoDate: "",
-    offerName: "",
-    description: "",
-    backgroundUrl: "",
-    id: null,
-  });
-  const [offers, setOffers] = useState([]);
-  const [previewImage, setPreviewImage] = useState("");
+
+
 
   //const [filteredEvents, setFilteredEvents] = useState([]);
 
@@ -70,8 +54,37 @@ export default function AdminDashboard() {
     setIsPopupOpen(true);
   };
 
+  const [offers, setOffers] = useState([]);
+  const [previewImage, setPreviewImage] = useState("");
+  const [offer, setOffer] = useState({
+    type: "",
+    range: "",
+    discount: "",
+    fromDate: "",
+    uptoDate: "",
+    offerName: "",
+    description: "",
+    backgroundUrl: "",
+    id: null,
+  });
 
-  // Fetch offers
+  // 🔄 Reset form
+  const resetOfferState = () => {
+    setOffer({
+      type: "",
+      range: "",
+      discount: "",
+      fromDate: "",
+      uptoDate: "",
+      offerName: "",
+      description: "",
+      backgroundUrl: "",
+      id: null,
+    });
+    setPreviewImage("");
+  };
+
+  // 📥 Fetch all offers
   useEffect(() => {
     const fetchOffers = async () => {
       try {
@@ -85,53 +98,53 @@ export default function AdminDashboard() {
         setOffers(offersList);
       } catch (error) {
         console.error("Error fetching offers:", error);
-        alert("Failed to fetch offers");
+        alert("❌ Failed to fetch offers");
       }
     };
     fetchOffers();
   }, []);
 
-
-  // Image upload
+  // 🖼️ Image upload
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
 
     if (!file) {
-      alert("No file selected");
+      alert("⚠️ No file selected");
       return;
     }
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", Offer_UPLOAD_PRESET); // ✅ Your unsigned preset
-    // ✅ Use the correct Cloudinary API URL
-    //const CLOUDINARY_API = "https://api.cloudinary.com/v1_1/dxavefpkp/image/upload"; // Replace with your actual cloud name
+    formData.append("upload_preset", Offer_UPLOAD_PRESET);
 
     try {
-      const response = await axios.post(CLOUDINARY_API, formData);
+      const response = await axios.post(CLOUDINARY_URL, formData);
       if (response.data.secure_url) {
-        setOffer((prev) => ({ ...prev, backgroundUrl: response.data.secure_url }));
+        setOffer((prev) => ({
+          ...prev,
+          backgroundUrl: response.data.secure_url,
+        }));
         alert("✅ Image uploaded successfully");
       } else {
         alert("⚠️ Upload failed — no URL returned");
-        console.error(response.data);
       }
     } catch (err) {
+      console.error("❌ Upload error:", err);
       alert("❌ Image upload failed");
-      console.error(err);
     }
   };
 
+  // ✅ Publish new offer
   const handlePublishOffer = async (e) => {
     e.preventDefault();
 
     if (offer.discount > 50) {
-      alert("Discount must be less than or equal to 50%");
+      alert("⚠️ Discount must be ≤ 50%");
       return;
     }
 
     if (!offer.backgroundUrl) {
-      alert("Please upload an image before publishing");
+      alert("⚠️ Please upload an image before publishing");
       return;
     }
 
@@ -147,63 +160,49 @@ export default function AdminDashboard() {
         backgroundUrl: offer.backgroundUrl,
       };
 
-      const docRef = await addDoc(
-        collection(db, "adminSettings", "offer", "data"),
-        offerToSave
-      );
+      await addDoc(collection(db, "adminSettings", "offer", "data"), offerToSave);
 
       alert("✅ Offer published successfully!");
-
-      setOffer({
-        type: "",
-        range: "",
-        discount: "",
-        fromDate: "",
-        uptoDate: "",
-        offerName: "",
-        description: "",
-        backgroundUrl: "",
-        id: null,
-      });
-      setPreviewImage("");
+      resetOfferState();
     } catch (error) {
-      console.error("❌ Failed to publish offer", error);
-      alert("Failed to publish offer");
+      console.error("❌ Publish failed:", error);
+      alert("❌ Failed to publish offer");
     }
   };
 
-
+  // 🔄 Update existing offer
   const handleUpdateOffer = async () => {
+    if (!offer.id) {
+      alert("⚠️ No offer selected to update");
+      return;
+    }
+
     try {
       const docRef = doc(db, "adminSettings", "offer", "data", offer.id);
       await updateDoc(docRef, offer);
-      alert("Offer updated");
+      alert("✅ Offer updated successfully");
+      resetOfferState();
     } catch (error) {
-      console.error("Failed to update offer", error);
-      alert("Failed to update offer");
+      console.error("❌ Update failed:", error);
+      alert("❌ Failed to update offer");
     }
   };
 
+  // 🗑️ Delete selected offer
   const handleDeleteOffer = async () => {
+    if (!offer.id) {
+      alert("⚠️ No offer selected to delete");
+      return;
+    }
+
     try {
       const docRef = doc(db, "adminSettings", "offer", "data", offer.id);
       await deleteDoc(docRef);
-      alert("Offer deleted");
-      setOffer({
-        type: "",
-        range: "",
-        discount: "",
-        fromDate: "",
-        uptoDate: "",
-        offerName: "",
-        description: "",
-        backgroundUrl: "",
-        id: null,
-      });
-      setPreviewImage("");
+      alert("🗑️ Offer deleted successfully");
+      resetOfferState();
     } catch (error) {
-      console.error("Failed to delete offer", error);
-      alert("Failed to delete offer");
+      console.error("❌ Delete failed:", error);
+      alert("❌ Failed to delete offer");
     }
   };
   //sidebar
@@ -408,7 +407,6 @@ export default function AdminDashboard() {
             )}
             {activeSection === "settings" && (
               <>
-                <h2>⚙️ Admin Settings</h2>
                 <div className="settings-block space-y-6">
                   <UserSetting />
                   <div className="add-offer-form">

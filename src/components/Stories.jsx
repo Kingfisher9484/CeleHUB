@@ -90,7 +90,7 @@ export default function Stories() {
             setProgress(0);
             interval = setInterval(() => {
                 setProgress((prev) => {
-                    if (prev >= 30) {
+                    if (prev >= 5) {
                         nextStory();
                         return 0;
                     }
@@ -190,7 +190,7 @@ export default function Stories() {
                         <div className="story-progress-bar">
                             <div
                                 className="story-progress"
-                                style={{ width: `${(progress / 30) * 100}%` }}
+                                style={{ width: `${(progress / 5) * 100}%` }}
                             ></div>
                         </div>
 

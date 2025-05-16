@@ -11,11 +11,8 @@
   align-items: center;
 }
 
-.event-page-header h1 {
+.event-page-container h1 {
   font-size: 2.5rem;
-  color: var(--text-light);
-}
-.dark .event-page-header h1 {
   color: var(--text-dark);
 }
 .share-button {
@@ -56,9 +53,6 @@
 .event-page-details p {
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
-  color: var(--text-light);
-}
-.dark .event-page-details p {
   color: var(--text-dark);
 }
 

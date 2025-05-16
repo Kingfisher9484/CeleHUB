@@ -1,81 +1,81 @@
-.faqs-container {
-    max-width: 800px;
-    min-width: 600px;
-    margin: auto;
-    padding: 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .faqs-container h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .faqs-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .faq-item {
-    background: #f9f9f9;
-    padding: 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out;
-    border: 1px solid #ddd;
-  }
-  
-  .faq-item:hover {
-    background: #f0f0f0;
-  }
-  
+.faq-container {
+  max-width: 800px;
+}
+.faq-h2 {
+  color: var(--text-light);
+}
+.dark .faq-h2 {
+  color: var(--text-dark);
+}
+.faq-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.faq-item {
+  background: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.faq-question {
+  background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+  padding: 1rem 1.2rem;
+  min-width: 100%;
+  text-align: left;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #333;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-question:hover {
+  background: linear-gradient(135deg, #e0eafc, #cfdef3);
+}
+
+.faq-answer-wrapper {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+  background-color: #f9f9f9;
+}
+
+.faq-answer-wrapper.open {
+  max-height: 300px; /* enough height for answer text */
+  padding: 1rem 1.2rem;
+}
+
+.faq-answer {
+  color: #444;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.arrow {
+  font-size: 0.9rem;
+  margin-left: 10px;
+  transition: transform 0.3s ease;
+}
+
+.faq-question.open .arrow {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 576px) {
   .faq-question {
-    font-size: 18px;
-    font-weight: bold;
-    color: #222;
+    font-size: 1rem;
+    padding: 0.9rem 1rem;
   }
-  
+
   .faq-answer {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+    font-size: 0.95rem;
   }
-  
-  .faq-item.active .faq-answer {
-    max-height: 100px;
-    padding-top: 10px;
-  }
-  
-/*const FAQs = () => {
-    const [activeIndex, setActiveIndex] = useState(null);
-  const faqs = [
-    { question: "What is CeleHub?", answer: "CeleHub is a platform that connects users with their favorite celebrities through exclusive content and interactions." },
-    { question: "How do I create an account?", answer: "You can sign up using your email or social media accounts on the registration page." },
-    { question: "Is CeleHub free to use?", answer: "CeleHub offers both free and premium features. Some exclusive content may require a subscription." },
-    { question: "How can I contact support?", answer: "You can reach out to our support team via the Contact Us page or email us at support@celehub.com." },
-    { question: "Can I collaborate with CeleHub as an influencer?", answer: "Yes! Reach out to us via the influencer partnership page for collaboration opportunities." },
-    { question: "How do I reset my password?", answer: "You can reset your password by clicking 'Forgot Password' on the login page and following the instructions." },
-  ];
-    const toggleFAQ = (index) => {
-      setActiveIndex(activeIndex === index ? null : index);
-    };
-<div className="faqs-container">
-                  <h2>Frequently Asked Questions</h2>
-                  <div className="faqs-list">
-                    {faqs.map((faq, index) => (
-                      <div
-                        key={index}
-                        className={`faq-item ${activeIndex === index ? "active" : ""}`}
-                        onClick={() => toggleFAQ(index)}
-                      >
-                        <div className="faq-question">{faq.question}</div>
-                        <div className="faq-answer">{faq.answer}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-*/
+}

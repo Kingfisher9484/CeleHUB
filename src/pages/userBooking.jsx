@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../Firebase/Firebase';
-import StarRating from '../EventPopup/StarRating'; // Make sure this path is correct
+import StarRating from '../EventPopup/StarRating';
 import './userBooking.css';
+import html2pdf from 'html2pdf.js';
 
 const UserBooking = () => {
   const { bookingId } = useParams();
@@ -49,50 +50,100 @@ const UserBooking = () => {
     }
   };
 
+  const handleDownloadPDF = async () => {
+    if (!booking || !event) return;
+
+    let base64Image = '';
+    try {
+      const imageBlob = await fetch(event.mediaUrl, { mode: 'cors' }).then(r => r.blob());
+      base64Image = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(imageBlob);
+      });
+    } catch (error) {
+      console.error('Failed to load image for PDF:', error);
+    }
+
+    const pdfContent = document.createElement('div');
+    pdfContent.innerHTML = `
+      <div style="padding: 20px; font-family: Arial;">
+        <h2>Booking Confirmation</h2>
+        <img src="${base64Image}" alt="Event" style="width:100%; max-height:400px; object-fit:cover; border-radius:10px;"/>
+        <p><strong>Booking ID:</strong> ${booking.id}</p>
+        <p><strong>Event:</strong> ${event.eventName || event.name}</p>
+        <p><strong>Type:</strong> ${event.type}</p>
+        <p><strong>Event Date:</strong> ${new Date(booking.eventDate).toLocaleDateString()}</p>
+        <p><strong>Booked On:</strong> ${new Date(booking.createdDate).toLocaleDateString()}</p>
+        <p><strong>Name:</strong> ${booking.firstName} ${booking.lastName}</p>
+        <p><strong>Email:</strong> ${booking.email}</p>
+        <p><strong>Phone:</strong> ${booking.phone}</p>
+        <p><strong>Address:</strong> ${booking.address}</p>
+        <p><strong>Status:</strong> ${booking.completed ? 'Completed' : 'Upcoming'}</p>
+        <hr/>
+        <p style="font-size:30px; text-align:right"><strong>Price:₹${event.price}</strong> </p>
+      </div>
+    `;
+
+    html2pdf().set({
+      margin: 0.5,
+      filename: 'booking_invoice.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+    }).from(pdfContent).save();
+  };
+
   if (loading) return <p className="loading-text">Loading...</p>;
   if (!booking) return <p>Booking not found.</p>;
 
   return (
-    <div className="user-booking-detail">
-      <button className="back-btn" onClick={() => navigate(-1)}>← Back</button>
-      {event && (
-        <div className="event-card-detail">
-          <h3>Event Info</h3>
-          <img src={event.mediaUrl} alt={event?.eventName} className="user-book-img" />
-          <p><strong>Name:</strong> {event.name}</p>
-          <p><strong>Type:</strong> {event.type}</p>
-          <p><strong>Range:</strong> {event.range}</p>
-          <p><strong>Description:</strong> {event.description}</p>
-          <p><strong>Price:</strong> ₹{event.price}</p>
-        </div>
-      )}
-      <div className="booking-card-detail">
-        <h2>{booking.eventName}</h2>
-        <p><strong>Booking ID:</strong> {booking.id}</p>
-        <p><strong>Booked On:</strong> {new Date(booking.createdDate).toLocaleDateString()}</p>
-        <p><strong>Event Date:</strong> {new Date(booking.eventDate).toLocaleDateString()}</p>
-        <p><strong>Price:</strong> ₹{booking.price}</p>
-        <p><strong>Status:</strong> {booking.completed ? "Completed" : "Upcoming"}</p>
-        <p><strong>Address:</strong> {booking.address}</p>
-        <p><strong>Email:</strong> {booking.email}</p>
-        <p><strong>Phone:</strong> {booking.phone}</p>
+    <div className="user-booking-container">
+      <button className="back-button" onClick={() => navigate(-1)}>⟵ Go Back</button>
 
-
-        {booking.acceptedByAdmin ? (
-          <div className="admin-note">
-            ✅ Your booking has been accepted. An admin will contact you soon...
-          </div>
-        ) : (
-          <div className="admin-note pending">
-            ✅ Your booking has been sent to admin. An admin will accept you soon...
+      <div className="booking-wrapper">
+        {event && (
+          <div className="event-info">
+            <h3>Event Details</h3>
+            <img src={event.mediaUrl} alt={event?.eventName} className="user-event-image" />
+            <p><strong>Name:</strong> {event.name}</p>
+            <p><strong>Type:</strong> {event.type}</p>
+            <p><strong>Range:</strong> {event.range}</p>
+            <p><strong>Description:</strong> {event.description}</p>
+            <p><strong>Price:</strong> ₹{event.price}</p>
           </div>
         )}
 
-        <div className="rating-section">
-          <StarRating eventId={booking.eventId} userId={booking.userId} />
-        </div>
+        <div className="booking-info">
+          <h2 className="section-title">{booking.eventName}</h2>
+          <p><strong>Booking ID:</strong> {booking.id}</p>
+          <p><strong>Booked On:</strong> {new Date(booking.createdDate).toLocaleDateString()}</p>
+          <p><strong>Event Date:</strong> {new Date(booking.eventDate).toLocaleDateString()}</p>
+          <p><strong>Price:</strong> ₹{booking.price}</p>
+          <p><strong>Status:</strong> {booking.completed ? 'Completed' : 'Upcoming'}</p>
+          <p><strong>Address:</strong> {booking.address}</p>
+          <p><strong>Email:</strong> {booking.email}</p>
+          <p><strong>Phone:</strong> {booking.phone}</p>
 
-        <button className="cancel-booking-btn" onClick={handleCancel}>Cancel Booking</button>
+          <div className={`admin-note ${booking.acceptedByAdmin ? 'accepted' : 'pending'}`}>
+            {booking.acceptedByAdmin
+              ? '✅ Your booking has been accepted. Admin will contact you soon.'
+              : '✅ Your booking has been sent. Awaiting admin acceptance...'}
+          </div>
+
+          <div className="rating-section">
+            <h4>Your Rating</h4>
+            <StarRating eventId={booking.eventId} userId={booking.userId} />
+          </div>
+
+          <button className="download-invoice-btn" onClick={handleDownloadPDF}>
+            Download Invoice
+          </button>
+
+          <button className="cancel-btn" onClick={handleCancel}>
+            Cancel Booking
+          </button>
+        </div>
       </div>
     </div>
   );

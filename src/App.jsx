@@ -10,7 +10,6 @@ import EventBookingPage from "./pages/EventBookingPage";
 import UserOrder from "./pages/userOrder";
 import UserBooking from "./pages/userBooking";
 import UserProfile from "./pages/UserProfile";
-import BookingConfirmation from "./pages/BookingConfirmation"; // adjust the path
 
 
 function App() {
@@ -34,7 +33,6 @@ function App() {
           <Route path="/user" element={<UserDashboard />} />
           <Route path="/eventbooking/:eventId" element={<EventBookingPage />} />
           <Route path="/userBooking/:bookingId" element={<UserBooking />} />
-          <Route path="/booking-confirmation" element={<BookingConfirmation />} />
         </Route>
 
         {/* Protected Routes for Admins */}

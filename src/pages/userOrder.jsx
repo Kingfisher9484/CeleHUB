@@ -98,12 +98,13 @@ const UserOrder = () => {
       {event ? (
         <div className="card event-card">
           <h3>🎉 Event Details</h3>
-          <p>📌 Name: {event.eventName}</p>
-          <p>📅 Type: {event.type}</p>
-          <p>🔖 Range: {event.range}</p>
-          <p>📝 Description: {event.description}</p>
+          <img src={event.mediaUrl} alt={event?.eventName} className="event-image" />
+          <p>Name: {event.eventName}</p>
+          <p>Type: {event.type}</p>
+          <p>Range: {event.range}</p>
+          <p>Description: {event.description}</p>
           <p>
-            📅 Created At:{" "}
+             Created At:{" "}
             {event.createdAt ? new Date(event.createdAt.seconds * 1000).toDateString() : "N/A"}
           </p>
         </div>
@@ -114,17 +115,17 @@ const UserOrder = () => {
       {/* Booking Details */}
       {booking ? (
         <div className="card booking-card">
-          <h3>📦 Booking Details</h3>
-          <p>👤 Name: {booking.firstName} {booking.lastName}</p>
-          <p>📞 Phone: {booking.phone}</p>
-          <p>🏠 Address: {booking.address}, {booking.pincode}</p>
-          <p>📧 Email: {booking.emailId}</p>
-          <p>📅 Event Date: {new Date(booking.eventDate.seconds * 1000).toDateString()}</p>
-          <p>💰 Price: ₹{booking.price}</p>
-          <p>📌 Payment Status: {booking.paymentStatus}</p>
-          <p>👀 Viewed By Admin: {booking.viewedByAdmin ? "✅" : "❌"}</p>
-          <p>🆔 Event ID: {booking.eventId}</p>
-          <p>🎯 Booking Status: {booking.acceptBooking || "Pending"}</p>
+          <h3>Booking Details</h3>
+          <p> Name: {booking.firstName} {booking.lastName}</p>
+          <p> Phone: {booking.phone}</p>
+          <p> Address: {booking.address}, {booking.pincode}</p>
+          <p> Email: {booking.emailId}</p>
+          <p> Event Date: {new Date(booking.eventDate.seconds * 1000).toDateString()}</p>
+          <p> Price: ₹{booking.price}</p>
+          <p> Payment Status: {booking.paymentStatus}</p>
+          <p> Viewed By Admin: {booking.viewedByAdmin ? "✅" : "❌"}</p>
+          <p> Event ID: {booking.eventId}</p>
+          <p> Booking Status: {booking.acceptBooking || "Pending"}</p>
         </div>
       ) : (
         <p className="loading-text">Loading booking details...</p>

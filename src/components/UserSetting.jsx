@@ -42,7 +42,8 @@ const UserSetting = () => {
 
   return (
     <div className="user-settings">
-      <h2>Settings for {currentUser.email}</h2>
+      <h2>Settings options go here</h2>
+      <h3>Settings for {currentUser.email}</h3>
 
       <div className="setting-row">
         <label>Dark Mode</label>

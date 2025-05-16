@@ -10,16 +10,13 @@ import "./../components/SideBar.css";
 import "./../components/SearchBar.css"
 import LoadingCard from '../components/LoadingCard';
 import ShowStar from '../EventPopup/showStar'; // Adjust path based on location
-import { color } from "framer-motion";
 // In your AdminPage.jsx or wherever you want to use it
 import Stories from "../components/Stories";
 import "./my-bookings(userdash).css";
 import MyBookings from "../components/my_bookings";
 import UserSetting from '../components/UserSetting';
 import CommentSection from '../components/CommentSection';
-
-
-
+import BookingAcceptNotifications from "../EventPopup/BookingAcceptedNotifications"; // Import User icon from lucide-react
 
 {/* Other sections here */ }
 const UserDashboard = ({ currentUser, comments }) => {
@@ -33,10 +30,17 @@ const UserDashboard = ({ currentUser, comments }) => {
   const navigate = useNavigate();
   // Firebase Auth User ID
 
-  const [userId, setUserId] = useState(null); // Track user ID state
 
-  const auth = getAuth();
-  //const userId = auth.currentUser ? auth.currentUser.uid : null;
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
 
   // Fetch events
   useEffect(() => {
@@ -67,20 +71,7 @@ const UserDashboard = ({ currentUser, comments }) => {
   const eventTypes = ["All", "Wedding", "Engagement", "Birthday", "Anniversary", "Festival"];
   //const filteredEvents = filter === "All" ? events : events.filter(event => event.type === filter);
 
-  //event share via availble apps
-  const handleShare = (event) => {
-    if (navigator.share) {
-      navigator.share({
-        title: event.eventName,
-        text: `Check out this event: ${event.eventName}`,
-        url: window.location.origin + `/event/${event.id}`,
-      })
-        .then(() => console.log("Shared successfully!"))
-        .catch((error) => console.error("Error sharing", error));
-    } else {
-      alert("Sharing is not supported on this browser.");
-    }
-  };
+
 
   //display offer
 
@@ -184,19 +175,19 @@ const UserDashboard = ({ currentUser, comments }) => {
               <path d="M2 10h3a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1m9-9h3a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-3a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1m0 9a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1zm0-10a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM2 9a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2zm7 2a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2zM0 2a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5.354.854a.5.5 0 1 0-.708-.708L3 3.793l-.646-.647a.5.5 0 1 0-.708.708l1 1a.5.5 0 0 0 .708 0z" />
             </svg></span>{sidebarExpanded && "Bookings"}
           </li>
-          <li className={`sidebar-li ${activeSection === "Settings" ? "active-section" : ""}`} onClick={() => setActiveSection("settings")}>
+          <li className={`sidebar-li ${activeSection === "settings" ? "active-section" : ""}`} onClick={() => setActiveSection("settings")}>
             <span className="sidebar-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
               <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0" />
               <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z" />
             </svg></span>{sidebarExpanded && "Settings"}
           </li>
-          <li className={`sidebar-li ${activeSection === "Comments" ? "active-section" : ""}`} onClick={() => setActiveSection("comments")}>
+          <li className={`sidebar-li ${activeSection === "comments" ? "active-section" : ""}`} onClick={() => setActiveSection("comments")}>
             <span className="sidebar-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-chat-right-text" viewBox="0 0 16 16">
               <path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z" />
               <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
             </svg></span>{sidebarExpanded && "Comments"}
           </li>
-          <li className={`sidebar-li ${activeSection === "FAQs" ? "active-section" : ""}`} onClick={() => setActiveSection("faqs")}>
+          <li className={`sidebar-li ${activeSection === "faqs" ? "active-section" : ""}`} onClick={() => setActiveSection("faqs")}>
             <span className="sidebar-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
               <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
               <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
@@ -215,22 +206,16 @@ const UserDashboard = ({ currentUser, comments }) => {
               <div className="marquee-wrapper">
                 <div className="marquee-track">
                   {offers.map((offer, index) => {
-                    const randomColor = `hsla(${Math.floor(Math.random() * 360)}, 60%, 70%,0.9)`;
-
+                    const randomColor = `hsla(${Math.floor(Math.random() * 360)}, 60%, 70%, 0.9)`;
                     return (
                       <div
                         key={offer.id}
                         className="offer-card"
                         style={{
-                          animationDelay: `${index * 2}s`,
-                          backgroundImage: `linear-gradient(to right,${randomColor}, rgba(0, 0, 0, 0.4)),
-                                          url(${offer.backgroundUrl || ""})`,
+                          animationDelay: `${index * 0.2}s`,
+                          backgroundImage: `linear-gradient(to right, ${randomColor}, rgba(0, 0, 0, 0.4)), url(${offer.backgroundUrl || ""})`,
                           backgroundSize: "cover",
                           backgroundPosition: "center",
-                          borderRadius: "12px",
-                          padding: "20px",
-                          color: "#fff",
-                          marginTop: "20px",
                           boxShadow: `0 4px 12px ${randomColor}`,
                         }}
                       >
@@ -243,9 +228,9 @@ const UserDashboard = ({ currentUser, comments }) => {
                       </div>
                     );
                   })}
-
                 </div>
               </div>
+
               <h3 lassName="text-center mb-4">Upcoming Events</h3>
 
               {/* Filter Buttons */}
@@ -314,9 +299,8 @@ const UserDashboard = ({ currentUser, comments }) => {
           {/*User setting*/}
           {activeSection === "settings" && (
             <>
-              <h2>⚙️ Settings</h2>
               <div className="settings-block">
-                <p>Settings options go here</p>
+
                 <UserSetting />
               </div>
             </>
@@ -324,34 +308,31 @@ const UserDashboard = ({ currentUser, comments }) => {
           {/*User Comments*/}
           {activeSection === "comments" && (
             <>
-              <CommentSection/>
+              <CommentSection />
             </>
           )}
           {/*User FAQs*/}
           {activeSection === "faqs" && (
-            <div className="container my-4">
-              <h2 className="text-center mb-4">Frequently Asked Questions</h2>
-              <div className="accordion" id="faqAccordion">
+            <div className="faq-container">
+              <h2 className="faq-h2">Frequently Asked Questions</h2>
+              <div className="faq-accordion">
                 {faqs.map((faq, index) => (
-                  <div className="accordion-item" key={index}>
-                    <h2 className="accordion-header">
-                      <button
-                        className={`accordion-button ${openIndex === index ? "" : "collapsed"}`}
-                        type="button"
-                        onClick={() => toggleFAQ(index)}
-                      >
-                        {faq.question}
-                      </button>
-                    </h2>
-                    <div
-                      className={`accordion-collapse collapse ${openIndex === index ? "show" : ""}`}
+                  <div className="faq-item" key={index}>
+                    <button
+                      className={`faq-question ${openIndex === index ? "open" : ""}`}
+                      onClick={() => toggleFAQ(index)}
                     >
-                      <div className="accordion-body">{faq.answer}</div>
+                      {faq.question}
+                      <span className="arrow">{openIndex === index ? "▲" : "▼"}</span>
+                    </button>
+                    <div className={`faq-answer-wrapper ${openIndex === index ? "open" : ""}`}>
+                      <div className="faq-answer">{faq.answer}</div>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
+
           )}
 
         </div>

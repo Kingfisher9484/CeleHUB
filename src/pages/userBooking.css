@@ -1,47 +1,6 @@
-.user-booking-detail {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  padding: 2rem;
-  min-height: 100vh;
-  animation: fadeIn 1s ease-in-out;
-}
-
-.back-btn {
-  background: none;
-  border: none;
-  font-size: 18px;
-  color: #007bff;
-  cursor: pointer;
-  margin-bottom: 20px;
-}
-
-.booking-card-detail,
-.event-card-detail {
-  flex: 1;
-  margin-top: 70px;
-  color: var(--text-light);
-  background-color: var(--bg-light2);
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  animation: slideUp 1s ease-in-out;
-}
-
-.dark .booking-card-detail,
-.dark .event-card-detail {
-  background: var(--bg-dark2);
+.event-info,.booking-wrapper{
   color: var(--text-dark);
-}
 
-.booking-card-detail h2 {
-  margin-bottom: 15px;
-}
-
-.booking-card-detail p {
-  font-size: 15px;
-  margin: 8px 0;
 }
 
 .admin-note {
@@ -66,23 +25,6 @@
   margin-top: 20px;
 }
 
-.cancel-booking-btn {
-  margin-top: 30px;
-  background: linear-gradient(to right, #ff4b2b, #ff416c);
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  font-size: 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  animation: pulse 2s infinite;
-}
-
-.cancel-booking-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(255, 65, 108, 0.3);
-}
 
 @keyframes slideUp {
   0% {
@@ -148,5 +90,143 @@
 
   .cancel-booking-btn {
     width: 100%;
+  }
+}
+.user-booking-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.back-button {
+  background: linear-gradient(to right, #ff5f6d, #ffc371);
+  border: none;
+  padding: 10px 18px;
+  font-size: 1rem;
+  color: #fff;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  transform: scale(1.05);
+}
+
+.booking-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.event-info, .booking-info {
+  background:none;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+.user-event-image {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #ffffff;
+}
+
+.admin-note {
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.admin-note.accepted {
+  background-color: #e0ffe0;
+  color: #218838;
+}
+
+.admin-note.pending {
+  background-color: #fff3cd;
+  color: #ffffff;
+}
+
+.rating-section {
+  margin-top: 20px;
+}
+
+.review-section {
+  margin-top: 30px;
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+}
+
+.cancel-btn {
+  margin-top: 30px;
+  background: linear-gradient(to right, #ff4b2b, #ff416c);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  animation: pulse 2s infinite;
+}
+
+.cancel-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(255, 65, 108, 0.3);
+}
+
+.download-invoice-btn {
+  padding: 10px 20px;
+  background-color: #3ac569;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 20px;
+  transition: transform 0.2s ease;
+}
+.download-invoice-btn:hover {
+  transform: scale(1.05);
+  background-color: #34b15c;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .booking-wrapper {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .event-info, .booking-info {
+    width: 48%;
+  }
+}
+
+@media (max-width: 480px) {
+  .back-button {
+    font-size: 0.9rem;
+    padding: 8px 14px;
+  }
+
+  .cancel-button {
+    width: 100%;
+  }
+
+  .event-image {
+    max-height: 200px;
   }
 }

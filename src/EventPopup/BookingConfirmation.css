@@ -1,0 +1,47 @@
+.booking-wrapper {
+  padding: 2rem;
+  background: white;
+  color: #333;
+  font-family: 'Arial', sans-serif;
+  max-width: 800px;
+  margin: auto;
+}
+
+.event-info, .booking-info {
+  margin-bottom: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 1rem;
+  background: #f9f9f9;
+}
+
+.event-image {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.admin-note {
+  margin-top: 1rem;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.admin-note.accepted {
+  background: #e7f9ec;
+  color: #2e7d32;
+}
+
+.admin-note.pending {
+  background: #fff4e5;
+  color: #c77c00;
+}

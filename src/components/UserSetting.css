@@ -12,7 +12,12 @@
   background: var(--bg-dark2);
   box-shadow: 0 0 12px rgba(152, 152, 152, 0.1);
 }
-
+.user-settings h2,h3{
+  color: var(--text-light);
+}
+.dark .user-settings h2,h3{
+  color: var(--text-dark);
+}
 .setting-row {
   display: flex;
   justify-content: space-between;

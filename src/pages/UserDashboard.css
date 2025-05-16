@@ -107,27 +107,25 @@ h3 {
   height: 3px;
   background: white;
 }
-
-/* Wrapper for marquee */
+/* Marquee wrapper */
 .marquee-wrapper {
   overflow: hidden;
   position: relative;
   width: 100%;
   padding: 20px 0;
   background: none;
-  /*background: #f0fff0;*/
-  /* soft pista green */
   border-radius: 10px;
-  /*border-top: 3px dotted #82e0aa;
-  border-bottom: 3px dotted #82e0aa;*/
 }
 
+/* Marquee track animation */
 .marquee-track {
   display: flex;
-  width: 100%;
-  animation: scrollMarquee 10s linear infinite;
+  width: fit-content;
+  animation: scrollMarquee 15s linear infinite;
+  align-items: stretch; /* Keep all cards aligned */
 }
 
+/* Scrolling keyframe */
 @keyframes scrollMarquee {
   0% {
     transform: translateX(100%);
@@ -138,12 +136,13 @@ h3 {
   }
 }
 
+/* Offer card styles */
 .offer-card {
-  min-width: 200px;
+  min-width: 250px;
   max-width: 400px;
-  height: auto;
+  min-height: 240px; /* Ensures full content shows */
   margin: 0 15px;
-  padding: 10px;
+  padding: 20px;
   border: 2px dotted #27ae60;
   border-radius: 18px;
   background: linear-gradient(135deg, #d4efdf, #a9dfbf);
@@ -151,6 +150,17 @@ h3 {
   flex-shrink: 0;
   animation: fadeInUp 0.8s ease-in-out;
   transition: transform 0.3s ease;
+  color: #fff;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Handle long text properly */
+.offer-card * {
+  word-break: break-word;
+  white-space: normal;
 }
 
 .offer-card:hover {
@@ -160,31 +170,30 @@ h3 {
 .offer-heading {
   font-size: 22px;
   font-weight: bold;
-  color: #145a32;
+  color: #fff;
   margin-bottom: 10px;
   animation: slideInDown 0.6s ease-in-out;
 }
 
 .offer-description {
   font-size: 15px;
-  color: #2e4053;
+  color: #f0f0f0;
   margin-bottom: 10px;
 }
 
 .blinking-offer-line {
   font-size: 14px;
-  color: #d35400;
+  color: #ffdd99;
   font-weight: bold;
   animation: blink 1s infinite alternate;
 }
 
-/* Entry & blinking animations */
+/* Animations */
 @keyframes fadeInUp {
   from {
     opacity: 0;
     transform: translateY(20px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -196,7 +205,6 @@ h3 {
     opacity: 0;
     transform: translateY(-10px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -207,52 +215,54 @@ h3 {
   from {
     opacity: 1;
   }
-
   to {
     opacity: 0.4;
   }
 }
 
-/* Default (desktop and larger) - already styled above */
-
 /* Tablet view */
 @media (max-width: 1024px) {
   .offer-card {
-    min-width: 200px;
-    max-width: 200px;
-    padding: 16px;
-    margin: 0 12px;
+    min-width: 220px;
+    max-width: 320px;
+    min-height: 230px;
+    padding: 18px;
+    border-radius: 16px;
   }
 
   .offer-heading {
     font-size: 20px;
   }
 
-  .offer-description,
-  .blinking-offer-line {
+  .offer-description {
     font-size: 14px;
+  }
+
+  .blinking-offer-line {
+    font-size: 13px;
+  }
+
+  .marquee-track {
+    animation-duration: 13s;
   }
 }
 
 /* Mobile view */
 @media (max-width: 768px) {
   .marquee-wrapper {
-    position: relative;
-    width: 30%;
-    padding: 10px 0;
+    width: 100%;
+    padding: 12px 0;
   }
 
   .marquee-track {
-    display: flex;
-    width: 90%;
-    animation: scrollMarquee 10s linear infinite;
+    animation-duration: 12s;
   }
 
   .offer-card {
-    min-width: 130px;
-    max-width: 230px;
+    min-width: 180px;
+    max-width: 240px;
+    min-height: 220px;
     padding: 14px;
-    margin: 0 10px;
     border-radius: 14px;
   }
 
@@ -265,16 +275,10 @@ h3 {
   }
 
   .blinking-offer-line {
-    font-size: 12.5px;
+    font-size: 12px;
   }
 }
 
-@media (max-width: 768px) {
-  .marquee-track {
-    animation-duration: 6s;
-    /* slower scroll on small devices */
-  }
-}
 
 /*User event card grid*/
 .user-events-grid {
