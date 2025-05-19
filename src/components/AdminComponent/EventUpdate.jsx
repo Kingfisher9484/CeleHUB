@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
-import { db } from "../../Firebase/Firebase";
+import { db } from "../../../Firebase/Firebase";
 import axios from "axios";
 import "./EventUpdate.css";
 
 const EventUpdate = ({ event, onClose, onUpdate }) => {
   const [updatedEvent, setUpdatedEvent] = useState({ ...event });
   const [uploading, setUploading] = useState(false);
-
+  const [filter, setFilter] = useState("All");
+  const [filteredEvents, setFilteredEvents] = useState([]);
+  
   const handleChange = (field, value) => {
     setUpdatedEvent((prev) => ({
       ...prev,
@@ -98,20 +100,32 @@ const EventUpdate = ({ event, onClose, onUpdate }) => {
             onChange={(e) => handleChange("eventName", e.target.value)}
             placeholder="Event Name"
           />
-          <input
+          <select
             className="update-input"
             type="text"
             value={updatedEvent.type}
             onChange={(e) => handleChange("type", e.target.value)}
             placeholder="Type"
-          />
-          <input
+          >
+            <option value="">Select Event Type</option>
+            <option value="Wedding">Wedding</option>
+            <option value="Engagement">Engagement</option>
+            <option value="Birthday">Birthday</option>
+            <option value="Anniversary">Anniversary</option>
+            <option value="Festival">Festival</option>
+            <option value="Party">Party</option>
+          </select>
+          <select
             className="update-input"
             type="text"
             value={updatedEvent.range}
             onChange={(e) => handleChange("range", e.target.value)}
             placeholder="Range"
-          />
+          ><option value="">Select Range</option>
+            <option value="Normal">Normal</option>
+            <option value="Medium">Medium</option>
+            <option value="Luxury">Luxury</option>
+          </select>
           <input
             className="update-input"
             type="number"

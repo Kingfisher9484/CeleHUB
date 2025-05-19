@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { getAuth } from 'firebase/auth';
+import { getAuth, sendPasswordResetEmail, signOut } from 'firebase/auth';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../Firebase/Firebase';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './UserProfile.css';
 
 const UserProfile = ({ onClose }) => {
   const auth = getAuth();
   const user = auth.currentUser;
+  const navigate = useNavigate();
 
   const [userData, setUserData] = useState(null);
   const [firstName, setFirstName] = useState('');
@@ -15,9 +17,9 @@ const UserProfile = ({ onClose }) => {
   const [newImage, setNewImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
 
-
   useEffect(() => {
     const fetchUserData = async () => {
+      if (!user) return;
       const userRef = doc(db, 'users', user.uid);
       const userSnap = await getDoc(userRef);
 
@@ -31,14 +33,14 @@ const UserProfile = ({ onClose }) => {
     };
 
     fetchUserData();
-  }, [user.uid]);
+  }, [user]);
 
   const handleImageUpload = async () => {
     if (!newImage) return;
     const formData = new FormData();
     formData.append('file', newImage);
-    formData.append('upload_preset', 'user_profiles'); // 🔁 Replace
-    const res = await axios.post('https://api.cloudinary.com/v1_1/dxavefpkp/image/upload', formData); // 🔁 Replace
+    formData.append('upload_preset', 'user_profiles'); // Replace with your Cloudinary preset
+    const res = await axios.post('https://api.cloudinary.com/v1_1/dxavefpkp/image/upload', formData); // Replace with your Cloudinary URL
     const imageUrl = res.data.secure_url;
 
     await updateDoc(doc(db, 'users', user.uid), { profilePic: imageUrl });
@@ -61,15 +63,22 @@ const UserProfile = ({ onClose }) => {
     await updateDoc(doc(db, 'users', user.uid), { firstName, lastName });
     alert('Name updated!');
   };
-  
+
+  const handleResetPassword = async () => {
+    try {
+      await sendPasswordResetEmail(auth, user.email);
+      alert(`Password reset link sent to ${user.email}`);
+    } catch (error) {
+      alert('Error sending reset email: ' + error.message);
+    }
+  };
+
   const handleLogout = async () => {
     await signOut(auth);
-    setUser(null);
-    navigate("/");
+    navigate('/');
   };
+
   return (
-
-
     <div className="profile-section">
       <h2 className="profile-h2">User Profile</h2>
       <div className="profile-pic-container">
@@ -78,40 +87,37 @@ const UserProfile = ({ onClose }) => {
         </div>
         <div className="edit-icon">
           📷
-          <input className='img-input' name="file" type="file" accept="image/*" onChange={(e) => setNewImage(e.target.files[0])} />
-          {/*<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" stroke-linejoin="round" stroke-linecap="round" viewBox="0 0 24 24" stroke-width="2" fill="none" stroke="currentColor" class="img-input-icon"><polyline points="16 16 12 12 8 16"></polyline><line y2="21" x2="12" y1="12" x1="12"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path><polyline points="16 16 12 12 8 16"></polyline></svg>*/}
+          <input className="img-input" name="file" type="file" accept="image/*" onChange={(e) => setNewImage(e.target.files[0])} />
         </div>
-        {previewUrl && <button className="delete-btn" onClick={handleDeleteImage}>🗑️</button>}
+        {previewUrl && (
+          <button className="delete-btn" onClick={handleDeleteImage}>🗑️</button>
+        )}
       </div>
+
       <div className="user-info">
-
-
         {userData && (
           <div className="details">
-            <h4 className="profile-name"><strong>Name:</strong> {userData.firstName}{userData.lastName}</h4>
+            <h4 className="profile-name"><strong>Name:</strong> {userData.firstName} {userData.lastName}</h4>
             <div className="name-fields">
               <input className="inpt" type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="First Name" />
               <input className="inpt" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Last Name" />
               <button className="update-name-btn" onClick={handleUpdateName}>Update Name</button>
             </div>
             <p><strong>Email:</strong> {userData.email}</p>
+            <button className="reset-btn" onClick={handleResetPassword}>Reset Password</button>
             <p><strong>Role:</strong> {userData.role}</p>
             <p><strong>Created At:</strong> {userData.createdAt?.toDate().toLocaleString()}</p>
           </div>
         )}
-        <div className="profile-dropdown-btn" onClick={handleLogout}>
-          Logout
-        </div>
-        {newImage && <button className="upload-btn" onClick={handleImageUpload}>Upload Image</button>}
+
+        {newImage && (
+          <button className="upload-btn" onClick={handleImageUpload}>Upload Image</button>
+        )}
+
+        <div className="profile-dropdown-btn" onClick={handleLogout}>Logout</div>
       </div>
     </div>
-
   );
 };
 
 export default UserProfile;
-/* <div className="user-profile-backdrop" onClick={onClose}>
-      <div className="user-profile-modal" onClick={(e) => e.stopPropagation()}>
-        <button className="close-btn" onClick={onClose}>×</button>
-       </div>
-   </div>  */

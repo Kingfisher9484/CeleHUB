@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
-import { db } from "../../Firebase/Firebase";
+import { db } from "../../../Firebase/Firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 // import jsPDF from "jspdf";
 // import "jspdf-autotable"; // ✅ Auto-registers itself — DO NOT manually assign it
@@ -56,31 +56,6 @@ function MyBookings() {
 
   const completed = filteredBookings.filter((b) => b.completed);
   const ongoing = filteredBookings.filter((b) => !b.completed);
-
-//   const exportToPDF = () => {
-//     const doc = new jsPDF();
-//     doc.text("My Bookings", 14, 20);
-  
-//     const head = [["S.No", "Event", "Created", "Event Date", "Price", "Viewed", "Status"]];
-//     const body = filteredBookings.map((b, i) => [
-//       i + 1,
-//       b.eventName,
-//       new Date(b.createdDate).toLocaleDateString(),
-//       new Date(b.eventDate).toLocaleDateString(),
-//       `₹${b.price}`,
-//       b.viewedByAdmin ? "✔✔" : "✔",
-//       b.completed || new Date(b.eventDate) < new Date() ? "✅" : "⏳"
-//     ]);
-  
-//     doc.autoTable({
-//       head,
-//       body,
-//       startY: 30
-//     });
-  
-//     doc.save("My_Bookings.pdf");
-//   };
-  
 
 const exportToPDF = () => {
   const element = document.getElementById("bookings-print-area");

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc, deleteDoc } from 'firebase/firestore';
-import { db } from '../../Firebase/Firebase';
-import StarRating from '../EventPopup/StarRating';
+import { db } from '../../../Firebase/Firebase';
+import StarRating from '../../EventPopup/StarRating';
 import './userBooking.css';
 import html2pdf from 'html2pdf.js';
 
@@ -11,10 +11,11 @@ const UserBooking = () => {
   const navigate = useNavigate();
   const [booking, setBooking] = useState(null);
   const [event, setEvent] = useState(null);
+  const [paymentInfo, setPaymentInfo] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchBookingAndEvent = async () => {
+    const fetchData = async () => {
       try {
         const bookingRef = doc(db, 'bookings', bookingId);
         const bookingSnap = await getDoc(bookingRef);
@@ -28,14 +29,20 @@ const UserBooking = () => {
             setEvent({ id: eventSnap.id, ...eventSnap.data() });
           }
         }
+
+        const adminRef = doc(db, 'adminPayment', 'paymentDetails');
+        const adminSnap = await getDoc(adminRef);
+        if (adminSnap.exists()) {
+          setPaymentInfo(adminSnap.data());
+        }
       } catch (error) {
-        console.error('Error fetching booking or event:', error);
+        console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchBookingAndEvent();
+    fetchData();
   }, [bookingId]);
 
   const handleCancel = async () => {
@@ -62,12 +69,16 @@ const UserBooking = () => {
         reader.readAsDataURL(imageBlob);
       });
     } catch (error) {
-      console.error('Failed to load image for PDF:', error);
+      console.error('Failed to load event image for PDF:', error);
     }
+
+    const paymentImgHTML = paymentInfo?.imageUrl
+      ? `<img src="${paymentInfo.imageUrl}" alt="QR" style="width:120px; margin-top:10px;" />`
+      : '';
 
     const pdfContent = document.createElement('div');
     pdfContent.innerHTML = `
-      <div style="padding: 20px; font-family: Arial;">
+      <div style="padding: 20px; font-family: Arial; color:black;">
         <h2>Booking Confirmation</h2>
         <img src="${base64Image}" alt="Event" style="width:100%; max-height:400px; object-fit:cover; border-radius:10px;"/>
         <p><strong>Booking ID:</strong> ${booking.id}</p>
@@ -81,7 +92,12 @@ const UserBooking = () => {
         <p><strong>Address:</strong> ${booking.address}</p>
         <p><strong>Status:</strong> ${booking.completed ? 'Completed' : 'Upcoming'}</p>
         <hr/>
-        <p style="font-size:30px; text-align:right"><strong>Price:₹${event.price}</strong> </p>
+        <p><strong>Admin Payment Info:</strong></p>
+        <p><strong>Account Number:</strong> ${paymentInfo?.accountNumber || 'N/A'}</p>
+        <p><strong>UPI ID:</strong> ${paymentInfo?.upiId || 'N/A'}</p>
+        ${paymentImgHTML}
+        <hr/>
+        <p style="font-size:30px; text-align:right"><strong>Price: ₹${event.price}</strong></p>
       </div>
     `;
 
@@ -131,8 +147,19 @@ const UserBooking = () => {
               : '✅ Your booking has been sent. Awaiting admin acceptance...'}
           </div>
 
+          {paymentInfo && (
+            <div className="payment-info">
+              <h4>Admin Payment Info</h4>
+              <p><strong>Account Number:</strong> {paymentInfo.accountNumber}</p>
+              <p><strong>UPI ID:</strong> {paymentInfo.upiId}</p>
+              {paymentInfo.imageUrl && (
+                <img src={paymentInfo.imageUrl} alt="Payment QR" className="payment-qr" />
+              )}
+            </div>
+          )}
+
           <div className="rating-section">
-            <h4>Your Rating</h4>
+            <h3>Your Rating</h3>
             <StarRating eventId={booking.eventId} userId={booking.userId} />
           </div>
 

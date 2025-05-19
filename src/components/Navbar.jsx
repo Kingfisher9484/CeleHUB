@@ -5,8 +5,8 @@ import { getDoc, doc } from "firebase/firestore";
 import { useNavigate, Link } from "react-router-dom";
 import { FaUserCircle, FaBars } from "react-icons/fa";
 import ThemeToggle from "../components/ThemeToggle";
-import "./Navbar2.css";
-import UserProfile from "../pages/UserProfile";
+import "./Navbar.css";
+import UserProfile from "../components/UserProfile";
 
 const CustomNavbar = () => {
   const [showUpdateProfile, setShowUpdateProfile] = useState(false);

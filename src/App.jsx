@@ -5,11 +5,10 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import UserDashboard from "./pages/UserDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Home from "./pages/Home/Home";
-import EventViewPage from "./pages/EventViewPage";
-import EventBookingPage from "./pages/EventBookingPage";
-import UserOrder from "./pages/userOrder";
-import UserBooking from "./pages/userBooking";
-import UserProfile from "./pages/UserProfile";
+import EventViewPage from "./pages/UserPages/EventViewPage";
+import EventBookingPage from "./pages/UserPages/EventBookingPage";
+import UserOrder from "./pages/AdminPages/userOrder";
+import UserBooking from "./pages/UserPages/userBooking";
 
 
 function App() {
@@ -23,7 +22,6 @@ function App() {
 
         {/* Protected Route for any logged-in user */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/UserProfile/:uid" element={<UserProfile />} />
           <Route path="/eventview/:id" element={<EventViewPage />} />
 
         </Route>

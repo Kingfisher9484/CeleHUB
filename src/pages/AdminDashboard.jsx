@@ -1,31 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { auth, db } from "../../Firebase/Firebase";
-import { collection, getDoc, getDocs, doc, updateDoc, deleteDoc, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, getDocs, } from "firebase/firestore";
 import SearchBar from "../components/SearchBar"; // Import the SearchBar component
 import { useNavigate } from "react-router-dom";
 import "./AdminDashboard.css";
-import NotificationBell from "../components/NotificationBell"; // Import notification component
+import NotificationBell from "../EventPopup/NotificationBell"; // Import notification component
 import Stories from "../components/Stories";
 import axios from "axios";
-import EventUpdate from "../components/EventUpdate";
-import "../components/EventUpdate.css";
+import EventUpdate from "../components/AdminComponent/EventUpdate";
+import "../components/AdminComponent/EventUpdate.css";
 import "./../components/SideBar.css";
 import "./../components/SearchBar.css"
-import AddEvent from "../components/AddEvent";
-import AdminOrders from "../components/AdminOrders";
-import RegisteredUsers from "../components/RegisteredUsers";
+import AddEvent from "../components/AdminComponent/AddEvent";
+import AdminOrders from "../components/AdminComponent/AdminOrders";
+import RegisteredUsers from "../components/AdminComponent/RegisteredUsers";
 import UserSetting from '../components/UserSetting';
+import AdminPayment from '../components/AdminComponent/AdminPayment';
 import CommentSection from '../components/CommentSection';
-
+import OfferUpdate from "../components/AdminComponent/OfferUpdate";
+import UpdatePasskey from "../components/UpdatePasskey";
+import AdminFAQs from "../components/AdminComponent/AdminFAQs";
 export default function AdminDashboard() {
 
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [activeSection, setActiveSection] = useState("addEvent"); // Default section to display
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [filter, setFilter] = useState("All");
+  const [filteredEvents, setFilteredEvents] = useState([]);
+
   const navigate = useNavigate();
 
 
@@ -40,6 +45,7 @@ export default function AdminDashboard() {
       const snapshot = await getDocs(collection(db, "events"));
       const eventList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       setEvents(eventList);
+      setFilteredEvents(eventList); // <-- fix here
     } catch (err) {
       console.error("Error fetching events:", err);
     }
@@ -53,37 +59,18 @@ export default function AdminDashboard() {
     setSelectedEvent(event);
     setIsPopupOpen(true);
   };
+  // Update filtered events when filter changes
+  useEffect(() => {
+    if (filter === "All") {
+      setFilteredEvents(events);
+    } else {
+      setFilteredEvents(events.filter(event => event.type === filter));
+    }
+  }, [filter, events]);
 
+  const eventTypes = ["All", "Wedding", "Engagement", "Birthday", "Anniversary", "Festival", "Party"];
+  //const filteredEvents = filter === "All" ? events : events.filter(event => event.type === filter);
   const [offers, setOffers] = useState([]);
-  const [previewImage, setPreviewImage] = useState("");
-  const [offer, setOffer] = useState({
-    type: "",
-    range: "",
-    discount: "",
-    fromDate: "",
-    uptoDate: "",
-    offerName: "",
-    description: "",
-    backgroundUrl: "",
-    id: null,
-  });
-
-  // 🔄 Reset form
-  const resetOfferState = () => {
-    setOffer({
-      type: "",
-      range: "",
-      discount: "",
-      fromDate: "",
-      uptoDate: "",
-      offerName: "",
-      description: "",
-      backgroundUrl: "",
-      id: null,
-    });
-    setPreviewImage("");
-  };
-
   // 📥 Fetch all offers
   useEffect(() => {
     const fetchOffers = async () => {
@@ -104,107 +91,6 @@ export default function AdminDashboard() {
     fetchOffers();
   }, []);
 
-  // 🖼️ Image upload
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-
-    if (!file) {
-      alert("⚠️ No file selected");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", Offer_UPLOAD_PRESET);
-
-    try {
-      const response = await axios.post(CLOUDINARY_URL, formData);
-      if (response.data.secure_url) {
-        setOffer((prev) => ({
-          ...prev,
-          backgroundUrl: response.data.secure_url,
-        }));
-        alert("✅ Image uploaded successfully");
-      } else {
-        alert("⚠️ Upload failed — no URL returned");
-      }
-    } catch (err) {
-      console.error("❌ Upload error:", err);
-      alert("❌ Image upload failed");
-    }
-  };
-
-  // ✅ Publish new offer
-  const handlePublishOffer = async (e) => {
-    e.preventDefault();
-
-    if (offer.discount > 50) {
-      alert("⚠️ Discount must be ≤ 50%");
-      return;
-    }
-
-    if (!offer.backgroundUrl) {
-      alert("⚠️ Please upload an image before publishing");
-      return;
-    }
-
-    try {
-      const offerToSave = {
-        type: offer.type,
-        range: offer.range,
-        discount: offer.discount,
-        fromDate: offer.fromDate,
-        uptoDate: offer.uptoDate,
-        offerName: offer.offerName,
-        description: offer.description,
-        backgroundUrl: offer.backgroundUrl,
-      };
-
-      await addDoc(collection(db, "adminSettings", "offer", "data"), offerToSave);
-
-      alert("✅ Offer published successfully!");
-      resetOfferState();
-    } catch (error) {
-      console.error("❌ Publish failed:", error);
-      alert("❌ Failed to publish offer");
-    }
-  };
-
-  // 🔄 Update existing offer
-  const handleUpdateOffer = async () => {
-    if (!offer.id) {
-      alert("⚠️ No offer selected to update");
-      return;
-    }
-
-    try {
-      const docRef = doc(db, "adminSettings", "offer", "data", offer.id);
-      await updateDoc(docRef, offer);
-      alert("✅ Offer updated successfully");
-      resetOfferState();
-    } catch (error) {
-      console.error("❌ Update failed:", error);
-      alert("❌ Failed to update offer");
-    }
-  };
-
-  // 🗑️ Delete selected offer
-  const handleDeleteOffer = async () => {
-    if (!offer.id) {
-      alert("⚠️ No offer selected to delete");
-      return;
-    }
-
-    try {
-      const docRef = doc(db, "adminSettings", "offer", "data", offer.id);
-      await deleteDoc(docRef);
-      alert("🗑️ Offer deleted successfully");
-      resetOfferState();
-    } catch (error) {
-      console.error("❌ Delete failed:", error);
-      alert("❌ Failed to delete offer");
-    }
-  };
   //sidebar
   const [sidebarVisible, setSidebarVisible] = useState(false);
 
@@ -260,43 +146,42 @@ export default function AdminDashboard() {
               </svg></span>
               {sidebarExpanded && " Search"}
             </li>
-            <li className={`sidebar-li ${activeSection === "Add Events" ? "active-section" : ""}`} onClick={() => setActiveSection("addEvent")}>
-              <span className="sidebar-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-richtext" viewBox="0 0 16 16">
-                <path d="M7.5 3.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m-.861 1.542 1.33.886 1.854-1.855a.25.25 0 0 1 .289-.047L11 4.75V7a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 7v-.5s1.54-1.274 1.639-1.208M5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5" />
+            <li className={`sidebar-li ${activeSection === "addEvent" ? "active-section" : ""}`} onClick={() => setActiveSection("addEvent")}>
+              <span className="sidebar-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-plus" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 5.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 .5-.5" />
                 <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2" />
                 <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z" />
               </svg></span>{sidebarExpanded && "Add Event"}
             </li>
-            <li className={`sidebar-li ${activeSection === "Update Events" ? "active-section" : ""}`} onClick={() => setActiveSection("updateEvent")}>
+            <li className={`sidebar-li ${activeSection === "updateEvent" ? "active-section" : ""}`} onClick={() => setActiveSection("updateEvent")}>
 
               <span className="sidebar-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-richtext" viewBox="0 0 16 16">
                   <path d="M7.5 3.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m-.861 1.542 1.33.886 1.854-1.855a.25.25 0 0 1 .289-.047L11 4.75V7a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 7v-.5s1.54-1.274 1.639-1.208M5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5" />
-                  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2" />
+                  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2" />
                   <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z" />
                 </svg>
               </span>{sidebarExpanded && "Update Event"}
             </li>
-            <li className={`sidebar-li ${activeSection === "Orders" ? "active-section" : ""}`} onClick={() => setActiveSection("orders")}>
+            <li className={`sidebar-li ${activeSection === "orders" ? "active-section" : ""}`} onClick={() => setActiveSection("orders")}>
               <span className="sidebar-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journals" viewBox="0 0 16 16">
                 <path d="M5 0h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2 2 2 0 0 1-2 2H3a2 2 0 0 1-2-2h1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1H1a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v9a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1H3a2 2 0 0 1 2-2" />
                 <path d="M1 6v-.5a.5.5 0 0 1 1 0V6h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V9h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 2.5v.5H.5a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1H2v-.5a.5.5 0 0 0-1 0" />
               </svg></span><NotificationBell />{sidebarExpanded && "Orders"}
             </li>
-            <li className={`sidebar-li ${activeSection === "Users" ? "active-section" : ""}`} onClick={() => setActiveSection("users")}>
-              <span className="sidebar-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journals" viewBox="0 0 16 16">
-                <path d="M5 0h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2 2 2 0 0 1-2 2H3a2 2 0 0 1-2-2h1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1H1a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v9a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1H3a2 2 0 0 1 2-2" />
-                <path d="M1 6v-.5a.5.5 0 0 1 1 0V6h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V9h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 2.5v.5H.5a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1H2v-.5a.5.5 0 0 0-1 0" />
+            <li className={`sidebar-li ${activeSection === "users" ? "active-section" : ""}`} onClick={() => setActiveSection("users")}>
+              <span className="sidebar-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+                <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />
               </svg></span>{sidebarExpanded && "Users"}
             </li>
-            <li className={`sidebar-li ${activeSection === "Settings" ? "active-section" : ""}`} onClick={() => setActiveSection("settings")}>
+            <li className={`sidebar-li ${activeSection === "settings" ? "active-section" : ""}`} onClick={() => setActiveSection("settings")}>
               <span className="sidebar-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
                 <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0" />
-                <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z" />
+                <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a.873.873 0 0 1 1.255-.52z" />
               </svg></span>{sidebarExpanded && "Settings"}
             </li>
             <hr />
-            <li className={`sidebar-li ${activeSection === "Comments" ? "active-section" : ""}`} onClick={() => setActiveSection("comments")}>
+            <li className={`sidebar-li ${activeSection === "comments" ? "active-section" : ""}`} onClick={() => setActiveSection("comments")}>
               <span className="sidebar-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right-text" viewBox="0 0 16 16">
                 <path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z" />
                 <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
@@ -354,24 +239,48 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
-                <h2 className="admin-main-content-h2">📅 Event Management</h2>
+                <h2 className="admin-main-content-h">📅 Event Management</h2>
                 <AddEvent fetchEvents={fetchEvents} />
+                <OfferUpdate />
               </>
             )}
             {activeSection === "updateEvent" && (
               <>
                 <h3>Update Events</h3>
+                {/* Filter Buttons */}
+                <div className="user-filter-section">
+                  <div className="user-event-filters">
+                    {eventTypes.map((type) => (
+                      <button
+                        key={type}
+                        className={`user-filter-button ${filter === type ? "active" : ""}`}
+                        onClick={() => setFilter(type)}
+                      >
+                        {type}
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <div className="update-events-grid">
-                  {events.map((event) => (
-                    <div key={event.id} className="update-event-card">
-                      <img src={event.mediaUrl} alt={event.eventName} className="event-image" />
-                      <div className="update-event-card-details">
-                        <h2>{event.eventName}</h2>
-                        <p>{event.type} | {event.range} | ₹{event.price}</p>
-                        <button className="event-edit-btn" onClick={() => handleEditClick(event)}>Edit</button>
+                  {filteredEvents.length > 0 ? (
+                    filteredEvents.map((event) => (
+                      <div key={event.id} className="update-event-card">
+                        <img src={event.mediaUrl} alt={event.eventName} className="event-image" />
+                        <div className="update-event-card-details">
+                          <h2>{event.eventName}</h2>
+                          <p>{event.type} | {event.range} | ₹{event.price}</p>
+                          <button className="event-edit-btn" onClick={() => handleEditClick(event)}>Edit</button>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  ) : (
+                    <>
+                      <LoadingCard />
+                      <LoadingCard />
+                      <LoadingCard />
+                      <p>No events found..!</p>
+                    </>
+                  )}
 
 
                   {isPopupOpen && selectedEvent && (
@@ -409,114 +318,14 @@ export default function AdminDashboard() {
               <>
                 <div className="settings-block space-y-6">
                   <UserSetting />
-                  <div className="add-offer-form">
-                    <h3>Add Offer</h3>
-                    <form onSubmit={handlePublishOffer}>
-                      <select value={offer.type} onChange={(e) => setOffer({ ...offer, type: e.target.value })}>
-                        <option value="">Select Event Type</option>
-                        <option value="Wedding">Wedding</option>
-                        <option value="Engagement">Engagement</option>
-                        <option value="Birthday">Birthday</option>
-                        <option value="Anniversary">Anniversary</option>
-                        <option value="Festival">Festival</option>
-                      </select>
-                      <select value={offer.range} onChange={(e) => setOffer({ ...offer, range: e.target.value })}>
-                        <option value="">Select Range</option>
-                        <option value="Normal">Normal</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Luxury">Luxury</option>
-                      </select>
-                      <input
-                        type="number"
-                        placeholder="Discount Price (%)"
-                        value={offer.discount}
-                        onChange={(e) => setOffer({ ...offer, discount: e.target.value })}
-                        max={50}
-                        required
-                      />
-                      <input
-                        type="date"
-                        value={offer.fromDate}
-                        onChange={(e) => setOffer({ ...offer, fromDate: e.target.value })}
-                        required
-                      />
-                      <input
-                        type="date"
-                        value={offer.uptoDate}
-                        onChange={(e) => setOffer({ ...offer, uptoDate: e.target.value })}
-                        required
-                      />
-                      <input
-                        type="text"
-                        placeholder="Offer Name"
-                        value={offer.offerName}
-                        onChange={(e) => setOffer({ ...offer, offerName: e.target.value })}
-                        required
-                      />
-                      <textarea
-                        placeholder="Offer Description"
-                        value={offer.description}
-                        onChange={(e) => setOffer({ ...offer, description: e.target.value })}
-                        required
-                      ></textarea>
-
-                      {/* Image upload input */}
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        required
-                      />
-                      {offer.backgroundUrl && (
-                        <img
-                          src={offer.backgroundUrl}
-                          alt="Preview"
-                          style={{ width: "100%", marginTop: "10px", borderRadius: "8px" }}
-                        />
-                      )}
-
-
-                      <button type="submit">📢 Publish Offer</button>
-                      {offer.id && (
-                        <>
-                          <button type="button" onClick={handleUpdateOffer}>
-                            🔄 Update Offer
-                          </button>
-                          <button type="button" onClick={handleDeleteOffer}>
-                            🗑️ Delete Offer
-                          </button>
-                        </>
-                      )}
-                    </form>
-
-                    {/* Display offers */}
-                    <div className="offer-list-wrapper">
-                      {offers.map((offer) => (
-                        <div
-                          key={offer.id}
-                          className="offer-container"
-                          style={{
-                            backgroundImage: `url(${offer.backgroundUrl})`,
-                            backgroundSize: "cover",
-                            backgroundPosition: "center",
-                            padding: "20px",
-                            borderRadius: "10px",
-                            marginBottom: "20px",
-                            color: "#fff",
-                          }}
-                        >
-                          <h2 className="offer-heading">{offer.offerName}</h2>
-                          <p className="offer-description">{offer.description}</p>
-                          <p className="blinking-offer-line">
-                            🎉 Enjoy {offer.discount}% OFF on {offer.type} events from{" "}
-                            {offer.fromDate} to {offer.uptoDate} — Don't miss out!
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  <UpdatePasskey />
+                  <AdminPayment />
                 </div>
               </>
+            )}
+            {/*User FAQs*/}
+            {activeSection === "faqs" && (
+              <AdminFAQs />
             )}
           </div>
         </div>
@@ -524,8 +333,8 @@ export default function AdminDashboard() {
         <SearchBar
           isOpen={isSearchOpen}
           onClose={() => setIsSearchOpen(false)}
-          //setFilteredEvents={setFilteredEvents}
           events={events}
+          setFilteredEvents={setFilteredEvents} // <-- Add this line
         />
 
         {/* CSS for styling */}

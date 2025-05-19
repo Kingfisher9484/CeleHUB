@@ -3,17 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./EventViewPage.css";
-import { db, auth } from "../../Firebase/Firebase";
-import {
-  doc,
-  getDoc,
-  collection,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
+import { db, auth } from "../../../Firebase/Firebase";
+import {doc,getDoc,collection,getDocs,query,where,} from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
-import StarRating from "../EventPopup/StarRating";
+import StarRating from "../../EventPopup/StarRating";
 
 export default function EventViewPage() {
   const { id } = useParams();
@@ -84,8 +77,8 @@ export default function EventViewPage() {
     }
   };
 
-  if (loading) return <div className="loading">Loading event...</div>;
-  if (notFound) return <div className="error">Event not found</div>;
+  if (loading) return <div className="loading" style={{ alignSelf: "center", justifySelf: "center" }}>Loading event...</div>;
+  if (notFound) return <div className="error" style={{ alignSelf: "center", justifySelf: "center" }}>Event not found</div>;
 
   return (
     <div className="event-page-container">

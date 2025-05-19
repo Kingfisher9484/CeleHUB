@@ -1,4 +1,4 @@
-.event-info,.booking-wrapper{
+.event-info h3,p ,.booking-wrapper h2,p , .rating-section h3{
   color: var(--text-dark);
 
 }
@@ -25,6 +25,19 @@
   margin-top: 20px;
 }
 
+.payment-info {
+  margin-top: 20px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+.payment-qr {
+  width: 150px;
+  height: auto;
+  margin-top: 10px;
+}
 
 @keyframes slideUp {
   0% {
@@ -153,10 +166,7 @@
   color: #218838;
 }
 
-.admin-note.pending {
-  background-color: #fff3cd;
-  color: #ffffff;
-}
+
 
 .rating-section {
   margin-top: 20px;

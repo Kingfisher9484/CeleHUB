@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../Firebase/Firebase";
+import { db } from "../../../Firebase/Firebase";
 import html2pdf from "html2pdf.js";
 import "./AdminOrders.css";
 

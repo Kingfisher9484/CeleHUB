@@ -36,18 +36,18 @@
     object-fit: cover;
   }
   
-  .event-info {
+  .featured-event-info {
     padding: 20px;
     text-align: center;
   }
   
-  .event-info h3 {
+  .featured-event-info h3 {
     font-size: 1.6rem;
     color: #333;
     margin-bottom: 10px;
   }
   
-  .event-info p {
+  .featured-event-info p {
     font-size: 1rem;
     color: #666;
     margin-bottom: 20px;

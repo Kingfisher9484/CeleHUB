@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { db, auth } from "../../Firebase/Firebase"; // adjust path if needed
+import { db, auth } from "../../../Firebase/Firebase"; // adjust path if needed
 import { addDoc, collection, serverTimestamp, doc, getDoc } from "firebase/firestore";
 import axios from "axios";
 import "./AddEvent.css";

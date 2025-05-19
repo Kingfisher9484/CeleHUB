@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
-import { db } from "../../Firebase/Firebase";
+import { db } from "../../../Firebase/Firebase";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import "./RegisteredUsers.css";
@@ -68,7 +68,7 @@ const RegisteredUsers = () => {
     <div className="registered-users-container">
       {/* === Admin Users Section === */}
       <button
-        className="toggle-btn"
+        className="hide-btn"
         onClick={() => setShowAdmins((prev) => !prev)}
       >
         {showAdmins ? "Hide Admins" : "Show Admins"}
@@ -86,15 +86,12 @@ const RegisteredUsers = () => {
               onChange={(e) => setAdminSearch(e.target.value)}
               className="search-input"
             />
-            <div className="action-buttons">
-              <button
-                onClick={() => handleDownloadPDF(filteredAdmins, "Admin Users")}
-                className="pdf-btn"
-              >
-                Download PDF
+            <div className="export-controls">
+              <button className="export-btn"onClick={() => handleDownloadPDF(filteredAdmins, "Admin Users")}>
+                📄 Export as PDF
               </button>
-              <button onClick={() => window.print()} className="print-btn">
-                Print
+              <button className="print-btn"onClick={() => window.print()} >
+                🖨️ Print Bookings
               </button>
             </div>
           </div>
@@ -138,7 +135,7 @@ const RegisteredUsers = () => {
 
       {/* === Normal Users Section === */}
       <button
-        className="toggle-btn"
+        className="hide-btn"
         onClick={() => setShowUsers((prev) => !prev)}
       >
         {showUsers ? "Hide Users" : "Show Users"}
@@ -156,15 +153,12 @@ const RegisteredUsers = () => {
               onChange={(e) => setUserSearch(e.target.value)}
               className="search-input"
             />
-            <div className="action-buttons">
-              <button
-                onClick={() => handleDownloadPDF(filteredUsers, "Normal Users")}
-                className="pdf-btn"
-              >
-                Download PDF
+            <div className="export-controls">
+              <button className="export-btn" onClick={() => handleDownloadPDF(filteredUsers, "Normal Users")}>
+                📄 Export as PDF
               </button>
-              <button onClick={() => window.print()} className="print-btn">
-                Print
+              <button className="print-btn"onClick={() => window.print()} >
+                🖨️ Print Bookings
               </button>
             </div>
           </div>

@@ -180,17 +180,22 @@
     opacity: 1;
   }
 }
-  .delete-btn {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    background: #f44336;
-    color: white;
-    border: none;
-    font-size: 14px;
-    padding: 5px 7px;
-    border-radius: 50%;
-    cursor: pointer;
+.delete-btn {
+  position: relative;
+  align-self: flex-end;
+  justify-self: flex-start;
+  left:-250px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #f44336;
+  border: 2px solid rgb(1, 235, 252);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  box-shadow: 0px 0px 100px rgb(1, 235, 252) , inset 0px 0px 10px rgb(1, 235, 252),0px 0px 5px rgb(255, 255, 255);
+  animation: flicker 2s linear infinite;
   }
   .profile-name{
     color: #057070;
@@ -238,7 +243,19 @@
     margin: 4px 0;
     color: #555;
   }
-  
+  .reset-btn {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #ffa500;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.reset-btn:hover {
+  background-color: #ff8c00;
+}
+
   /* Animations */
   @keyframes fadeInBackdrop {
     from {

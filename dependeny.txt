@@ -53,10 +53,11 @@ service cloud.firestore {
 
 		// 🔹 Users Collection
 		match /users/{userId} {
-  		allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
-  		allow update: if request.auth != null && (request.auth.uid == userId || isAdmin());
- 			allow create: if request.auth != null;
-		}
+  		allow read: if isAdmin() || request.auth.uid == userId; // admin can read all
+  		allow update: if request.auth.uid == userId;
+  		allow create: if request.auth != null;	
+	}
+
 
 
     // 🔹 Events Collection (Admins Only)
@@ -151,15 +152,7 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    // 🔹 Comments Collection
-    match /comments/{commentId} {
-      allow read: if true;
-      allow create: if request.auth != null;
-      allow update: if request.auth != null;
-      allow delete: if request.auth != null &&
-        (request.auth.uid == resource.data.userId ||
-         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin");
-    }
+  
 
     // 🔹 Stories Collection
     match /stories/{storyId} {
@@ -167,179 +160,13 @@ service cloud.firestore {
       allow create: if isAdmin();
       allow update, delete: if false;
     }
-  }
-}
-
-.......................
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-
-    // 🔹 Users Collection
-    match /users/{userId} {
-      allow read, update: if request.auth != null && request.auth.uid == userId;
-      allow create: if request.auth != null;
+      match /comments/{commentId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
     }
-
-    // 🔹 Events Collection (Admins Only)
-    match /events/{eventId} {
-      allow read: if true;
-
-      // ✅ Only Admins can write (create, update, delete)
-      allow write, create, update, delete: if request.auth != null 
-        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
-
-      // ✅ Event Creation & Validation
-      allow create: if request.auth != null 
-        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin"
-        && request.resource.data.eventName is string
-        && request.resource.data.type is string
-        && request.resource.data.range is string
-        && request.resource.data.range in ["small", "medium", "large"]
-        && request.resource.data.description is string
-        && request.resource.data.price is number
-        && request.resource.data.price >= 100 
-        && request.resource.data.price <= 100000
-        && request.resource.data.createdAt is timestamp;
-
-      // ✅ Event Update Validation (Admins can update only specific fields)
-      allow update: if request.auth != null 
-        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin"
-        && request.resource.data.diff(resource.data).changedKeys().hasOnly(["eventName", "type", "range", "description", "price"])
-        && request.resource.data.range in ["small", "medium", "large"]
-        && request.resource.data.price is number
-        && request.resource.data.price >= 100 
-        && request.resource.data.price <= 100000;
-    }
-
-    // 🔹 Bookings Collection
-    match /bookings/{bookingId} {
-      // ✅ Users can read their own bookings
-      allow read: if request.auth != null && request.auth.uid == resource.data.userId;
-
-      // ✅ Admins can read/list everything
-      allow read, list: if request.auth != null 
-        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
-
-      // ✅ Users can create their own bookings
-      allow create: if request.auth != null 
-        && request.auth.uid == request.resource.data.userId
-        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
-        && exists(/databases/$(database)/documents/events/$(request.resource.data.eventId))
-        && request.resource.data.eventId is string
-        && request.resource.data.eventName is string
-        && request.resource.data.eventType is string
-        && request.resource.data.eventDate is timestamp
-        && request.resource.data.price is number
-        && request.resource.data.price >= 0 
-        && request.resource.data.paymentStatus is string
-        && request.resource.data.paymentStatus in ["pending", "paid"]
-        && !exists(/databases/$(database)/documents/bookings/$(bookingId));
-
-         // ✅ Users can list only their own bookings correctly
-      allow list: if request.auth != null 
-        && request.auth.uid == request.query.userId;
-
-      // ✅ Allow Admins to read and list all bookings
-      allow read, list: if request.auth != null 
-        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
-      
-      // ✅ Admins can update 'acceptBooking' and 'viewedByAdmin' only
-      allow update: if request.auth != null 
-        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin"
-        && request.resource.data.diff(resource.data).changedKeys().hasOnly(["viewedByAdmin", "acceptBooking"])
-        && (
-          !("viewedByAdmin" in request.resource.data) || request.resource.data.viewedByAdmin is bool
-        )
-        && (
-          !("acceptBooking" in request.resource.data) || request.resource.data.acceptBooking in ["pending", "accepted", "rejected"]
-        );
-
-      // ✅ Admins can delete bookings
-      allow delete: if request.auth != null 
-        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
-    }
-  }
-}
-new
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-
-    // 🔹 Users Collection
-    match /users/{userId} {
-      allow read, update: if request.auth != null && request.auth.uid == userId;
-      allow create: if request.auth != null;
-    }
-
-    // 🔹 Events Collection (Admins Only)
-    match /events/{eventId} {
-      allow read: if true;
-
-      allow create: if isAdmin()
-        && request.resource.data.eventName is string
-        && request.resource.data.type is string
-        && request.resource.data.range is string
-        && request.resource.data.range in ["small", "medium", "large"]
-        && request.resource.data.description is string
-        && request.resource.data.price is number
-        && request.resource.data.price >= 100 
-        && request.resource.data.price <= 100000
-        && request.resource.data.createdAt is timestamp;
-
-      allow update: if isAdmin()
-        && request.resource.data.range in ["small", "medium", "large"]
-        && request.resource.data.price is number
-        && request.resource.data.price >= 100 
-        && request.resource.data.price <= 100000;
-
-      allow delete: if isAdmin();
-    }
-
-    // 🔹 Bookings Collection
-    match /bookings/{bookingId} {
-      // ✅ Users can get their own booking
-      allow get: if request.auth != null && request.auth.uid == resource.data.userId;
-
-      // ✅ Users can list only their own bookings
-      allow list: if request.auth != null;
-
-      // ✅ Users can create a booking
-      allow create: if request.auth != null 
-        && request.auth.uid == request.resource.data.userId
-        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
-        && exists(/databases/$(database)/documents/events/$(request.resource.data.eventId))
-        && request.resource.data.eventId is string
-        && request.resource.data.eventName is string
-        && request.resource.data.eventType is string
-        && request.resource.data.eventDate is string // assuming ISO string from frontend
-        && request.resource.data.price is number
-        && request.resource.data.price >= 0 
-        && request.resource.data.paymentStatus is string
-        && request.resource.data.paymentStatus in ["pending", "paid"];
-
-      // ✅ Admin can get and list all bookings
-      allow get, list: if isAdmin();
-
-      // ✅ Admin can update specific fields only
-      allow update: if isAdmin()
-        && (request.resource.data.keys().hasOnly(["viewedByAdmin", "acceptBooking"]) || 
-            request.resource.data.diff(resource.data).changedKeys().hasOnly(["viewedByAdmin", "acceptBooking"]))
-        && (
-          !("viewedByAdmin" in request.resource.data) || request.resource.data.viewedByAdmin is bool
-        )
-        && (
-          !("acceptBooking" in request.resource.data) || request.resource.data.acceptBooking in ["pending", "accepted", "rejected"]
-        );
-
-      // ✅ Admin can delete bookings
-      allow delete: if isAdmin();
-    }
-
-    // 🔁 Admin Role Helper
-    function isAdmin() {
-      return request.auth != null &&
-             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+    match /adminPayment/{docId} {
+      allow read: if request.auth != null;
+      allow write, update: if isAdmin();
     }
   }
 }

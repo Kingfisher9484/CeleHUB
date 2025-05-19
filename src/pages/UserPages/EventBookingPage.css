@@ -1,4 +1,5 @@
-.booking-container {
+
+.booking-lr-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6,6 +7,7 @@
     padding: 2rem;
     min-height: 100vh;
     animation: fadeIn 1s ease-in-out;
+    background: none;
   }
   
   .booking-left,
@@ -75,7 +77,24 @@
     background-color: #acacac !important;
     border-radius: 5px;
   }
-  
+  .booked-date {
+  background-color: #f8d7da !important;
+  color: #721c24 !important;
+  border-radius: 50%;
+}
+
+.selected-date {
+  background-color: #d4edda !important;
+  color: #155724 !important;
+  font-weight: bold;
+  border: 2px solid #28a745 !important;
+  border-radius: 50%;
+}
+
+.available-date {
+  color: #000;
+}
+
   .booking-right button {
     display: block;
     width: 100%;
@@ -302,4 +321,32 @@ h3 {
     width: 100%;
     margin-bottom: 1rem;
   }
+}
+
+
+/* Payment scanner */
+.admin-payment-info {
+  background: none;
+  border: 2px dashed #ffb347;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  animation: fadeIn 0.5s ease;
+  min-height: 200px;
+  color: var(--text-light);
+}
+.dark .admin-payment-info{
+  color:var(--text-dark);
+}
+.admin-payment-info h3 {
+  margin-top: 0;
+  color: #d97706;
+}
+
+.payment-scanner {
+  width: 100%;
+  max-width: 220px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  justify-self: center;
 }

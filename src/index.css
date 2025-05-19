@@ -5,17 +5,14 @@ body {
 /*------ThemeToggle dark light--------*/
 /* Default Light Mode */
 :root {
-
   --bg-light: #f2e3ff;
   --bg-light2: #ffffff;
-  /*--bg-light2:#cddced;*/
   --text-light: #272626;
   --shadow-light: rgba(0, 0, 0, 0.4);
 
 
   --bg-dark: #362544;
   --bg-dark2: #0b0b0f;
-  /*--bg-dark2:#243b55;*/
   --text-dark: #ffffff;
   --shadow-dark: rgba(221, 220, 220, 0.9);
 }
@@ -40,11 +37,13 @@ body {
 /* Prevent global styles from affecting components */
 * {
   box-sizing: inherit;
+  /* font-family: Verdana, sans-serif; */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.01);
 }
 
 /* Reset default margins and paddings safely */
-html,
-body {
+html,body {
   margin: 0;
   padding: 60px 0 0 0;
   box-sizing: border-box;
@@ -53,21 +52,16 @@ body {
   font-family: "poppins";
   /* Apply a smoother scrolling effect */
   scroll-behavior: smooth;
-  background-color: var(--bg-light);
 
 }
 
 /* Ensure all elements stay inside the screen */
 body {
-
-  overflow-x: hidden;
-  /* Prevent horizontal scroll */
-  color: var(--text);
+  overflow-x: hidden;/* Prevent horizontal scroll */
   transition: background 0.3s, color 0.3s;
 }
 
-.dark html,
-body {
+.dark html,body {
   background-color: var(--bg-dark);
 }
 
@@ -93,16 +87,8 @@ body {
 /* border-radius: 10px;
     transition: 0.3s ease-in-out;
 } */
-*/
+
 /* Hover Effect on Scrollbar */
 /* ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(45deg, #ff8a00, #ff0055);
 } */
-
-/* Firefox Scrollbar */
-* {
-  font-family: Verdana, sans-serif;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.01);
-  ;
-}

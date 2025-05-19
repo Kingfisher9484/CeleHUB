@@ -1,0 +1,36 @@
+.update-passkey-container {
+  width: 100%;
+  margin: 20px auto;
+  background:var(--bg-light2);
+  padding: 20px;
+  border-radius: 10px;
+  color:var(--text-light);
+}
+.dark .update-passkey-container {
+    background: var(--bg-dark2);
+    color:var(--text-dark);
+}
+.passkey-box {
+  margin-bottom: 15px;
+}
+
+.passkey-box input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 6px;
+  font-size: 16px;
+}
+
+.update-actions button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #0055ff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.update-meta p {
+  margin: 5px 0;
+}

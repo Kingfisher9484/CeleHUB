@@ -35,7 +35,7 @@ const FeaturedEvents = () => {
                                 src={`/images/${event.toLowerCase()}.jpg`}
                                 alt={event}
                             />
-                            <div className="event-info">
+                            <div className="featured-event-info">
                             <h3 className="home-event-h3">{event}</h3>
                             <button className="view-btn" onClick={() => window.location.href = '/auth'}>Book Now</button>
             </div>

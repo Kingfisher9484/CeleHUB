@@ -35,8 +35,8 @@
   margin-bottom: 15px;
 }
 
-.name-fields input,
-.auth-form input {
+.name-fields  .auth-input ,
+.auth-form  .auth-input  {
   width: 100%;
   flex: 1;
   padding: 12px 15px;
@@ -158,16 +158,51 @@
 }
 
 .otp-btn:disabled {
-  background-color: #999;
+  background-color: #ed49fc;
   cursor: not-allowed;
 }
 
 .captcha-box {
-  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* aligns content to the left */
+  gap: 8px; /* spacing between checkbox and label */
+  margin-top: 10px;
   padding: 10px;
-  background-color: #f0f0f0;
-  border-left: 4px solid #0077cc;
+  border: 2px solid #213a5a;
+  border-radius: 10px;
+}
+
+.captcha-box .captcha {
+  margin: 0;
+  cursor: pointer;
+  width: 30px;
+  padding-right: 10px;
+}
+
+.captcha-box label {
   font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+.forgot-password-section {
+  margin-top: 10px;
+  text-align: left;
+}
+
+.forgot-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+.success-text {
+  color: green;
+  font-size: 0.85rem;
 }
 
 /* Animations */

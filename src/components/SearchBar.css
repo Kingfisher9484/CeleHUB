@@ -10,7 +10,7 @@
     padding: 0px;
     border-radius: 10px;
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-    background-color: #ccc;
+    background-color: #ffffff;
     backdrop-filter: blur(50px);
     display: hidden;
     align-items: center;

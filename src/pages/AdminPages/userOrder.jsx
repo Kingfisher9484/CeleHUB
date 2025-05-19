@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
-import { db } from "../../Firebase/Firebase";
+import { db } from "../../../Firebase/Firebase";
 import "./userOrder.css"; // Custom CSS
 
 const UserOrder = () => {
