@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../../../Firebase/Firebase";
 import html2pdf from "html2pdf.js";
-import "./UserOrder.css";
+import "./userOrder.css";
 
 const UserOrder = () => {
   const { bookingId } = useParams();
