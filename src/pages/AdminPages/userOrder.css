@@ -1,124 +1,183 @@
-
-
-/* Container */
-.order-container {
-  max-width: 800px;
-  margin: 80px auto;
-  align-self: center;
+.user-booking-container {
   padding: 20px;
-  background: white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  animation: fadeIn 0.8s ease-in-out;
+  max-width: 1200px;
+  margin: auto;
 }
 
-/* Header */
-.order-heading {
-  text-align: center;
-  font-size: 24px;
-  color: #333;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-/* Cards */
-.card {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  animation: fadeInUp 0.7s ease-in-out;
-  transition: transform 0.3s ease;
-}
-
-.card:hover {
-  transform: scale(1.02);
-}
-
-.event-card {
-  border-left: 5px solid #4CAF50;
-}
-
-.booking-card {
-  border-left: 5px solid #2196F3;
-}
-
-/* Loading Text */
-.loading-text {
-  text-align: center;
-  font-size: 16px;
-  color: #777;
-  animation: pulseText 1.5s infinite;
-}
-
-/* Buttons */
-.button-group {
+.booking-wrapper {
   display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.accept-btn, .cancel-btn {
-  padding: 12px 20px;
-  font-size: 16px;
-  border-radius: 8px;
-  font-weight: bold;
+.event-info, .booking-info {
+  background: none;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+.user-event-image {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.back-button {
+  background: linear-gradient(to right, #ff5f6d, #ffc371);
   border: none;
+  padding: 10px 18px;
+  font-size: 1rem;
+  color: #fff;
+  border-radius: 30px;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
-}
-.accepted {
-  background-color: orange !important;
-  color: white;
-  cursor: not-allowed;
-  pointer-events: none;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
 }
 
-.accept-btn {
-  background-color: #4CAF50;
-  color: white;
-  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+.back-button:hover {
+  transform: scale(1.05);
 }
 
-.accept-btn:hover {
-  background-color: #388E3C;
+.admin-note {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 6px;
+  font-weight: 500;
 }
+
+.admin-note.accepted {
+  background-color: #e0ffe0;
+  color: #218838;
+  border-left: 4px solid #218838;
+}
+
+.admin-note.pending {
+  background-color: #fff3cd;
+  color: #856404;
+  border-left: 4px solid #856404;
+}
+
 
 .cancel-btn {
-  background-color: #f44336;
+  background: linear-gradient(to right, #ff4b2b, #ff416c);
   color: white;
-  box-shadow: 0 4px 10px rgba(244, 67, 54, 0.3);
+  border: none;
+  padding: 12px 20px;
+  font-size: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  animation: pulse 2s infinite;
 }
 
 .cancel-btn:hover {
-  background-color: #d32f2f;
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(255, 65, 108, 0.3);
 }
 
-/* 🔹 Animated Pulse Effect */
-.pulse {
-  animation: pulseEffect 1.5s infinite;
+.download-invoice-btn {
+  padding: 10px 20px;
+  background-color: #3ac569;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s ease;
 }
 
-/* 🔹 Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+.download-invoice-btn:hover {
+  transform: scale(1.05);
+  background-color: #34b15c;
 }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 65, 108, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 65, 108, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 65, 108, 0);
+  }
 }
 
-@keyframes pulseEffect {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+/* Responsive */
+@media (max-width: 768px) {
+  .booking-wrapper {
+    flex-direction: column;
+  }
+
+  .user-event-image {
+    max-height: 250px;
+  }
+
+  .back-button {
+    font-size: 0.9rem;
+    padding: 8px 14px;
+  }
+
+  .cancel-btn,
+  .download-invoice-btn {
+    width: 100%;
+  }
+ }
+/* ✅ Printable Invoice Style *
+.invoice-print {
+  display: none;
+  color: #000;
+  background-color: #fff;
+  padding: 2rem;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  border-radius: 10px;
 }
 
-@keyframes pulseText {
-  0% { opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { opacity: 0.6; }
+.invoice-print h2 {
+  text-align: center;
+  margin-bottom: 1rem;
 }
+
+.invoice-print p {
+  margin: 5px 0;
+}
+
+✅ Print-specific rules
+@media print {
+  body * {
+    visibility: hidden !important;
+    position: absolute !important;
+    left: -9999px;
+  }
+
+  .invoice-print,
+  .invoice-print * {
+    visibility: visible !important;
+    position: static !important;
+    left: 0 !important;
+  }
+
+  .invoice-print {
+    display: block !important;
+    width: 100%;
+    background-color: #fff !important;
+    color: #000 !important;
+    padding: 2rem;
+    margin: 0;
+    box-shadow: none;
+  }
+
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+    visibility: visible !important;
+  }
+
+  button {
+    display: none !important;
+  }
+} */

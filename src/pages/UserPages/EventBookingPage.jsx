@@ -136,25 +136,25 @@ export default function EventBookingPage() {
 
     const div = document.createElement("div");
     div.innerHTML = `
-      <div style="padding: 20px; font-family: Arial;">
-        <h2>Booking Confirmation</h2>
+      <div style="padding: 20px; font-family: Arial;color:black">
+        <h2 style="color:black">Booking Confirmation</h2>
         <img src="${base64Image}" style="width:100%; max-height:300px; object-fit:cover;" />
-        <p><strong>Booking ID:</strong> ${pdfData.id}</p>
-        <p><strong>Event:</strong> ${pdfData.eventName}</p>
-        <p><strong>Date:</strong> ${pdfData.eventDate}</p>
-        <p><strong>Name:</strong> ${pdfData.firstName} ${pdfData.lastName}</p>
-        <p><strong>Email:</strong> ${pdfData.email}</p>
-        <p><strong>Status:</strong> Pending</p>
-        <h3><strong>Amount:</strong> ₹${pdfData.price}</h3>
-        <h3>Payment Details</h3>
+        <p style="color:black"><strong>Booking ID:</strong> ${pdfData.id}</p>
+        <p style="color:black"><strong>Event:</strong> ${pdfData.eventName}</p>
+        <p style="color:black"><strong>Date:</strong> ${pdfData.eventDate}</p>
+        <p style="color:black"><strong>Name:</strong> ${pdfData.firstName} ${pdfData.lastName}</p>
+        <p style="color:black"><strong>Email:</strong> ${pdfData.email}</p>
+        <p style="color:black"><strong>Status:</strong> Pending</p>
+        <h3 style="color:black"><strong>Amount:</strong> ₹${pdfData.price}</h3>
+        <h3 style="color:black">Payment Details</h3>
         ${
           adminPayment?.imageUrl
             ? `<img src="${adminPayment.imageUrl}" style="width:200px;" />`
             : ""
         }
-        <p>Phone: ${adminPayment?.paymentNumber}</p>
-        <p>UPI: ${adminPayment?.upiId}</p>
-        <p>Account No: ${adminPayment?.accountNumber}</p>
+        <p style="color:black">Phone: ${adminPayment?.paymentNumber}</p>
+        <p style="color:black">UPI: ${adminPayment?.upiId}</p>
+        <p style="color:black">Account No: ${adminPayment?.accountNumber}</p>
         <p style="color:green;"><strong>Pay ₹2000 in advance to confirm booking after admin verification.</strong></p>
       </div>
     `;
@@ -246,7 +246,7 @@ export default function EventBookingPage() {
         <div className="popup">
           <div className="popup-content">
             <div className="checkmark-animation">✅</div>
-            <p>Booking successful! Your invoice is being downloaded.</p>
+            <p className="chech-p">Booking successful! Your invoice is being downloaded.</p>
             <button
               onClick={() => {
                 setPopupVisible(false);

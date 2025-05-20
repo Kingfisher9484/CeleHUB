@@ -130,7 +130,7 @@
 }
 
 /* ==== Rating Stars ==== */
-.rating-container {
+.view-rating-container {
   display: flex;
   align-items: center;
   gap: 5px;

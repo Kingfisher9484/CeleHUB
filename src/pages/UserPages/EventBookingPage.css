@@ -69,12 +69,13 @@
 
   .booked-date {
     background-color: #2950bc !important;
-    color: var(--text-light) !important;
+    color: white !important;
     border-radius: 5px;
   }
   
   .available-date {
-    background-color: #acacac !important;
+    background-color: #e1dfdf !important;
+    color:rgb(2, 189, 55);
     border-radius: 5px;
   }
   .booked-date {
@@ -271,7 +272,7 @@ h3 {
   margin-bottom: 1rem;
   animation: popIn 0.5s ease;
 }
-
+.check-p{color:black}
 .popup-content button {
   margin: 0.5rem;
   padding: 10px 20px;
@@ -312,7 +313,8 @@ h3 {
 
 /* Responsive */
 @media (max-width: 768px) {
-  .booking-container {
+  
+  .booking-lr-container {
     flex-direction: column;
     padding: 1rem;
   }

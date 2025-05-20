@@ -109,8 +109,8 @@ export default function EventViewPage() {
             />
           </div>
 
-          <div className="rating-section">
-            <p><strong>Your Rating:</strong></p>
+          <div className="view-rating-section">
+            <p><strong>Your Rating:</strong></p><br/>
             <StarRating eventId={event.id} />
           </div>
 
