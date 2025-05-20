@@ -1,8 +1,12 @@
-.event-info h3,p ,.booking-wrapper h2,p , .rating-section h3{
+
+.booking-event-wrapper-h ,.booking-event-wrapper-p {
   color: var(--text-dark);
 
 }
+ .rating-section h3{
+  color: var(--text-dark);
 
+}
 .admin-note {
   margin-top: 15px;
   padding: 12px;

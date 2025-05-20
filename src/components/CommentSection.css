@@ -55,6 +55,7 @@
   border-radius: 10px;
   padding: 0.8rem;
   margin-top: 1rem;
+  color:black
 }
 
 .reply-section {
@@ -64,14 +65,16 @@
 
 .reply {
   background: #f0f0f0;
+  color:var(--text-light);
   margin-top: 6px;
   padding: 6px 10px;
   border-radius: 6px;
   border: 1px solid #7321ed;
 
 }
-
-.reply-toggle {
+.dark .reply {
+  color: var(--text-dark);
+}.reply-toggle {
   background: none;
   color: #007bff;
   border: none;

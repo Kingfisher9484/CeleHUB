@@ -117,16 +117,16 @@ const UserBooking = () => {
     <div className="user-booking-container">
       <button className="back-button" onClick={() => navigate(-1)}>⟵ Go Back</button>
 
-      <div className="booking-wrapper">
+      <div className="booking-event-wrapper">
         {event && (
-          <div className="event-info">
-            <h3>Event Details</h3>
+          <div className="booking-event-info">
+            <h1 className="booking-event-wrapper-h">Event Details</h1>
             <img src={event.mediaUrl} alt={event?.eventName} className="user-event-image" />
-            <p><strong>Name:</strong> {event.name}</p>
-            <p><strong>Type:</strong> {event.type}</p>
-            <p><strong>Range:</strong> {event.range}</p>
-            <p><strong>Description:</strong> {event.description}</p>
-            <p><strong>Price:</strong> ₹{event.price}</p>
+            <p className="booking-event-wrapper-p"><strong>Name:</strong> {event.name}</p>
+            <p className="booking-event-wrapper-p"><strong>Type:</strong> {event.type}</p>
+            <p className="booking-event-wrapper-p"><strong>Range:</strong> {event.range}</p>
+            <p className="booking-event-wrapper-p"><strong>Description:</strong> {event.description}</p>
+            <p className="booking-event-wrapper-p"><strong>Price:</strong> ₹{event.price}</p>
           </div>
         )}
 
