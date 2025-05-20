@@ -121,7 +121,7 @@ const UserOrder = () => {
     <div className="user-booking-container">
       <div className="booking-wrapper">
         {event ? (
-          <div className="event-info">
+          <div className="order-event-info">
             <h3>🎉 Event Details</h3>
             <img src={event.mediaUrl} alt={event?.eventName} className="user-event-image" />
             <p>Name: {event.eventName}</p>
@@ -135,7 +135,7 @@ const UserOrder = () => {
         )}
 
         {booking ? (
-          <div className="booking-info">
+          <div className="order-booking-info">
             <h3>📋 Booking Details</h3>
             <p>Name: {booking.firstName} {booking.lastName}</p>
             <p>Phone: {booking.phone}</p>

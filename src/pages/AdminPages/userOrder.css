@@ -2,12 +2,16 @@
   padding: 20px;
   max-width: 1200px;
   margin: auto;
+  color:white;
 }
-
+.order-booking-info,.order-event-info{
+ color:white;
+}
 .booking-wrapper {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  color:white;
 }
 
 .event-info, .booking-info {
@@ -15,6 +19,7 @@
   padding: 20px;
   border-radius: 16px;
   box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  color:white;
 }
 
 .user-event-image {
